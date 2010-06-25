@@ -3,7 +3,7 @@ import os
 
 version = '0.1'
 
-setup(name='recensio.import',
+setup(name='recensio.imports',
       version=version,
       description="Import tools for recensio",
       long_description=open("README.txt").read() + "\n" +
@@ -30,7 +30,7 @@ setup(name='recensio.import',
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
-      triggerImport = recensio.import.tools:triggerPloneImportFromRecensio
+      triggerImport = recensio.imports.tools:triggerPloneImportFromRecensio
 
       [z3c.autoinclude.plugin]
       target = plone
