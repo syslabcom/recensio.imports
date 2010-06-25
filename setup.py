@@ -29,6 +29,8 @@ setup(name='recensio.import',
       ],
       entry_points="""
       # -*- Entry points: -*-
+      [console_scripts]
+      triggerImport = recensio.import.tools:triggerPloneImportFromRecensio
 
       [z3c.autoinclude.plugin]
       target = plone
