@@ -1,5 +1,5 @@
 import sys, urllib
 
-def triggerPloneImportFromRecensio(self):
+def triggerPloneImportFromRecensio():
     url = sys.argv[1]
-    urllib.open(url)
+    urllib.urlopen(url)
