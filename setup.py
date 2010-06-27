@@ -25,6 +25,7 @@ setup(name='recensio.imports',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'zc.testbrowser',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

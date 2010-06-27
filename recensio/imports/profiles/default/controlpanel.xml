@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<object
+    name="portal_controlpanel"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="recensio"
+    purge="False">
+
+    <configlet
+        title="Recensio Import Settings"
+        action_id="recensio_import"
+        appId="recensio.imports"
+        category="Products"
+        condition_expr=""
+        icon_expr=""
+        url_expr="string:${portal_url}/@@recensio-import-settings"
+        visible="True"
+        i18n:attributes="title">
+        <permission>Mange portal</permission>
+    </configlet>
+</object>

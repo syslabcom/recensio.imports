@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<import-steps>
+    <import-step id="recensio_imports_importfolder" version="20100627-01"
+        handler="recensio.imports.setuphandlers.setUpImportFolder"
+        description="Import Folders"
+        title="recensio_import_folder" />
+</import-steps>

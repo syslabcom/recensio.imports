@@ -2,10 +2,20 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="recensio">
 
   <five:registerPackage package="." initialize=".initialize" />
+
+  <adapter factory=".adapters.RecensioImportData" />
+
+  <browser:page
+    for="Products.CMFCore.interfaces.ISiteRoot"
+    name="xmlrpc_import"
+    class=".browser.Import"
+    permission="cmf.ManagePortal"
+    />
 
   <genericsetup:registerProfile
       name="default"
@@ -14,6 +24,12 @@
       description="Installs the recensio.imports package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
-  <!-- -*- extra stuff goes here -*- -->
+
+  <browser:page
+    name="recensio-import-settings"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".browser.RecensioImportConfigurationControlPanel"
+    permission="cmf.ManagePortal"
+    />
   
 </configure>
