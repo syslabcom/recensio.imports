@@ -54,7 +54,7 @@ class Import(BrowserView):
                 value = value[path_elem]
             data[key] = value
         doc_id = sha(str(obj)).hexdigest()
-        self.import_folder.invokeFactory('Rezension einer Monographie', doc_id, **data)
+        self.import_folder.invokeFactory('Review einer Monographie', doc_id, **data)
 
     @property
     def import_folder(self):
