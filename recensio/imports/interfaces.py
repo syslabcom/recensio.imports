@@ -24,7 +24,7 @@ class IRecensioImportConfiguration(Interface):
     ddcTime = schema.TextLine(title = u'ddcTime')
     subtitle = schema.TextLine(title = u'subtitle')
     yearOfPublication = schema.TextLine(title = u'yearOfPublication')
-    yearOfPublication = schema.TextLine(title = u'yearOfPublication')
+    placeOfPublication = schema.TextLine(title = u'placeOfPublication')
     publisher = schema.TextLine(title = u'publisher')
     idBvb = schema.TextLine(title = u'idBvb')
     searchresults = schema.TextLine(title = u'searchresults')
