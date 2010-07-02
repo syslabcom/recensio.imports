@@ -17,6 +17,14 @@
     permission="cmf.ManagePortal"
     />
 
+  <browser:page
+    for="OFS.interfaces.IFolder"
+    name="magazine_import"
+    class=".browser.MagazineImport"
+    layer="recensio.theme.interfaces.IRecensioLayer"
+    permission="zope2.View"
+    />
+
   <genericsetup:registerProfile
       name="default"
       title="recensio.imports"

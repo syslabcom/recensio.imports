@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="recensio">
+<body>
+
+<metal:content-core fill-slot="content-core">
+    <div id="mag-upload">
+        <h1>Dieser View dient dem Upload von Rezensionen</h1>
+        <form name="mag_upload" method="POST" enctype="multipart/form-data"
+            tal:condition="not: view/import_successful">
+            <p>
+                <label for="pdf">PDF Datei</label>
+                <input type="file" name="pdf" />
+            </p>
+            <p>
+                <label for="xls">XLS Datei</label>
+                <input type="file" name="xls" />
+            </p>
+            <p>
+                <input type="submit" value="Importieren" />
+            </p>
+            <div class="errors" tal:condition="view/header_error">
+                <p>
+Das Format der Excel Datei scheint falsch zu sein.
+                </p>
+Die erste Zeile muss die Information enthalten, was die Spalten bedeuten.
+Es müssen genau %i Spalten sein. Auch zusätzliche Spalten die nur Leerzeichen
+enthalten sind nicht zulässig. Die Gross.- und Kleinschreibung bei den
+Spaltenbeschreibungen in der ersten Spalte ist nicht wichtig, auch 
+Leerzeichen, Tabs oder CRs an Anfang und Ende des Spaltentextes werden
+ignoriert.
+Hier ist das Ergebnis der Auswertung:
+                <table>
+                    <tr>
+                        <th>Soll</th>
+                        <th>Ist</th>
+                        <th>Akzeptiert</th>
+                    </tr>
+                    <tr tal:repeat="row view/header_error">
+                        <td tal:repeat="column row" tal:content="column"></td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+        <div class="success" tal:condition="view/import_successful">
+            <p>Alle Dokumente konnten importiert werden. Dies sind die neuen Dokumente:</p>
+            <ul>
+                <li tal:repeat="result view/results">
+                    <a href=""
+                        tal:attributes="href result/url"
+                        tal:content="result/name">
+                        Title
+                    </a>
+                </li>
+            </ul>
+        </div>
+</metal:content-core>
+
+</body>
+</html>
+

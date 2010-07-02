@@ -26,6 +26,7 @@ setup(name='recensio.imports',
       install_requires=[
           'setuptools',
           'zc.testbrowser',
+          'pyPdf',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
