@@ -173,6 +173,7 @@ class MagazineImport(object):
             messages = IStatusMessage(self.request)
             for error in self.errors:
                 messages.addStatusMessage(error, type='error')
+            return self.template(self)
         self.import_successful = True
         return self.template(self)
 
