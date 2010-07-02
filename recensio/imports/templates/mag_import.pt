@@ -27,6 +27,7 @@
                 <p>
 Das Format der Excel Datei scheint falsch zu sein.
                 </p>
+                <p>
 Die erste Zeile muss die Information enthalten, was die Spalten bedeuten.
 Es müssen genau %i Spalten sein. Auch zusätzliche Spalten die nur Leerzeichen
 enthalten sind nicht zulässig. Die Gross.- und Kleinschreibung bei den
@@ -34,14 +35,18 @@ Spaltenbeschreibungen in der ersten Spalte ist nicht wichtig, auch
 Leerzeichen, Tabs oder CRs an Anfang und Ende des Spaltentextes werden
 ignoriert.
 Hier ist das Ergebnis der Auswertung:
+                </p>
                 <table>
                     <tr>
                         <th>Soll</th>
                         <th>Ist</th>
                         <th>Akzeptiert</th>
                     </tr>
-                    <tr tal:repeat="row view/header_error">
-                        <td tal:repeat="column row" tal:content="column"></td>
+                    <tr class=""
+                        tal:repeat="row view/header_error"
+                        tal:attributes="class row/css_class">
+                        <td tal:repeat="column row/columns" 
+                            tal:content="column"></td>
                     </tr>
                 </table>
             </div>

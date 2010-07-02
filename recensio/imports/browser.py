@@ -197,7 +197,11 @@ class MagazineImport(object):
                         column.append(self.reference_header[i] == xls_data[0][i].strip().lower() and 'Ja' or 'Nein')
                     except IndexError:
                         column.append("Nein")
-                    columns.append(column)
+                    if column[-1] == 'Nein':
+                        css_class = 'bad'
+                    else:
+                        css_class = 'good'
+                    columns.append({'columns' : column, 'css_class' : css_class})
                 self.header_error = columns
                 raise FrontendException()
         except TypeError, e:
