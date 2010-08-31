@@ -2,9 +2,12 @@
 from OFS.Image import File
 from Products.statusmessages.interfaces import IStatusMessage
 from cStringIO import StringIO
-from recensio.contenttypes.content.presentationcollection import PresentationCollection
-from recensio.contenttypes.content.presentationarticlereview import PresentationArticleReview
-from recensio.contenttypes.content.presentationmonograph import PresentationMonograph
+from recensio.contenttypes.content.presentationcollection import \
+    PresentationCollection
+from recensio.contenttypes.content.presentationarticlereview import \
+    PresentationArticleReview
+from recensio.contenttypes.content.presentationmonograph import \
+    PresentationMonograph
 from recensio.contenttypes.content.reviewjournal import ReviewJournal
 from swiss.tabular import XlsReader
 from recensio.contenttypes.content.reviewmonograph import ReviewMonograph
@@ -21,7 +24,8 @@ import urllib2
 import xmlrpclib
 from sha import sha
 
-from recensio.imports.interfaces import IRecensioImport, IRecensioImportConfiguration
+from recensio.imports.interfaces import IRecensioImport, \
+    IRecensioImportConfiguration
 from recensio.contenttypes.setuphandlers import addOneItem
 
 def viewPage(br):
@@ -69,7 +73,8 @@ class Import(BrowserView):
                 value = value[path_elem]
             data[key] = value
         doc_id = sha(str(obj)).hexdigest()
-        self.import_folder.invokeFactory('Review einer Monographie', doc_id, **data)
+        self.import_folder.invokeFactory('Review einer Monographie', doc_id, \
+                                         **data)
 
     @property
     def import_folder(self):
@@ -87,7 +92,8 @@ class RecensioImportConfigurationEditForm(controlpanel.RegistryEditForm):
     label = 'Recensio Import settings'
     description = ''
 
-class RecensioImportConfigurationControlPanel(controlpanel.ControlPanelFormWrapper):
+class RecensioImportConfigurationControlPanel(\
+        controlpanel.ControlPanelFormWrapper):
     form = RecensioImportConfigurationEditForm
 
 class FrontendException(Exception):
@@ -99,62 +105,94 @@ class MagazineImport(object):
             'portal_type' : ReviewMonograph
            ,'isbn/issn' : 'isbn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez.-name' : 'reviewAuthor'
-           ,'autor-name werk' : 'Authors'
+           ,'rez. nachname' : 'reviewAuthorLastname'
+           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'autor vorname' : 'firstname_authors_1'
+           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'pdf-seitenzahl beginn' : 'page-start'
-           ,'pdf-seitenzahl ende' : 'page-end'
-           ,'type (rm, rz, pm, pasb, paz)' : 'ignore'
-           ,'freies feld für zitierschema' : 'unknown'}
+           ,'start' : 'pageStart'
+           ,'ende' : 'pageEnd'
+           ,'typ' : 'ignore'
+           ,'review journal' : 'ignore'
+           ,'rj' : 'ignore'
+           ,'partner url' : 'ignore'
+           ,'optionales zitierschema' : 'customCitation'}
         ,'rz' : {
             'portal_type' : ReviewJournal
-           ,'isbn/issn' : 'isbn'
+           ,'isbn/issn' : 'issn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez.-name' : 'reviewAuthor'
-           ,'autor-name werk' : 'Authors'
+           ,'rez. nachname' : 'reviewAuthorLastname'
+           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'autor vorname' : 'firstname_authors_1'
+           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'pdf-seitenzahl beginn' : 'page-start'
-           ,'pdf-seitenzahl ende' : 'page-end'
-           ,'type (rm, rz, pm, pasb, paz)' : 'ignore'
-           ,'freies feld für zitierschema' : 'unknown'}
+           ,'start' : 'pageStart'
+           ,'ende' : 'pageEnd'
+           ,'typ' : 'ignore'
+           ,'review journal' : 'ignore'
+           ,'rj' : 'ignore'
+           ,'partner url' : 'ignore'
+           ,'optionales zitierschema' : 'customCitation'}
         ,'pm' : {
             'portal_type' : PresentationMonograph
            ,'isbn/issn' : 'isbn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez.-name' : 'reviewAuthor'
-           ,'autor-name werk' : 'Authors'
+           ,'rez. nachname' : 'reviewAuthorLastname'
+           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'autor vorname' : 'firstname_authors_1'
+           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'pdf-seitenzahl beginn' : 'page-start'
-           ,'pdf-seitenzahl ende' : 'page-end'
-           ,'type (rm, rz, pm, pasb, paz)' : 'ignore'
-           ,'freies feld für zitierschema' : 'unknown'}
+           ,'start' : 'pageStart'
+           ,'ende' : 'pageEnd'
+           ,'typ' : 'ignore'
+           ,'review journal' : 'ignore'
+           ,'rj' : 'ignore'
+           ,'partner url' : 'ignore'
+           ,'optionales zitierschema' : 'customCitation'}
         ,'pasb' : {
             'portal_type' : PresentationCollection
            ,'isbn/issn' : 'isbn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez.-name' : 'reviewAuthor'
-           ,'autor-name werk' : 'Authors'
+           ,'rez. nachname' : 'reviewAuthorLastname'
+           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'autor vorname' : 'firstname_authors_1'
+           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'pdf-seitenzahl beginn' : 'page-start'
-           ,'pdf-seitenzahl ende' : 'page-end'
-           ,'type (rm, rz, pm, pasb, paz)' : 'ignore'
-           ,'freies feld für zitierschema' : 'unknown'}
+           ,'start' : 'pageStart'
+           ,'ende' : 'pageEnd'
+           ,'review journal' : 'ignore'
+           ,'rj' : 'ignore'
+           ,'typ' : 'ignore'
+           ,'partner url' : 'ignore'
+           ,'optionales zitierschema' : 'customCitation'}
         ,'paz' : {
             'portal_type' : PresentationArticleReview
            ,'isbn/issn' : 'isbn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez.-name' : 'reviewAuthor'
-           ,'autor-name werk' : 'Authors'
+           ,'rez. nachname' : 'reviewAuthorLastname'
+           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'autor vorname' : 'firstname_authors_1'
+           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'pdf-seitenzahl beginn' : 'page-start'
-           ,'pdf-seitenzahl ende' : 'page-end'
-           ,'type (rm, rz, pm, pasb, paz)' : 'ignore'
-           ,'freies feld für zitierschema' : 'unknown'}
+           ,'start' : 'pageStart'
+           ,'ende' : 'pageEnd'
+           ,'typ' : 'ignore'
+           ,'partner url' : 'ignore'
+           ,'review journal' : 'ignore'
+           ,'rj' : 'ignore'
+           ,'typ' : 'ignore'
+           ,'optionales zitierschema' : 'customCitation'}
         }
-    ignored_fields = [u'freies feld für zitierschema', 'type (rm, rz, pm, pasb, paz)']
+    portal_type_mappings[''] = portal_type_mappings['rz']
+    ignored_fields = ['typ', '']
 
-    reference_header = [u'isbn/issn', u'jahr', u'rez.-name', u'autor-name werk', u'titel werk', u'pdf-seitenzahl beginn', u'pdf-seitenzahl ende', u'type (rm, rz, pm, pasb, paz)', u'freies feld f\xfcr zitierschema']
-    unicode_convert = [u'isbn/issn', u'jahr', u'rez.-name', u'autor-name werk', u'titel werk', u'freies feld f\xfcr zitierschema']
+    reference_header = ['', u'isbn/issn', u'jahr', u'rez. vorname', \
+        u'rez. nachname', u'autor vorname', u'autor nachname', u'titel werk', \
+        u'start', u'ende', u'typ', u'partner url', \
+        u'optionales zitierschema', '', u'review journal', u'rj']
+    unicode_convert = [u'isbn/issn', u'jahr', u'rez. vorname', \
+        u'rez. nachname', u'autor vorname', u'autor nachname', u'titel werk', \
+        u'optionales zitierschema']
 
 
     template = ViewPageTemplateFile('templates/mag_import.pt')
@@ -180,7 +218,7 @@ class MagazineImport(object):
     def addContent(self, xls, pdf):
         try:
             xls_data = XlsReader(xls).read().data
-            keys = [x.strip().lower() for x in xls_data[0]]
+            keys = [x.strip().lower() for x in xls_data[4]]
             if keys != self.reference_header:
                 columns = []
                 for i in range(max(len(keys), len(self.reference_header))):
@@ -190,31 +228,37 @@ class MagazineImport(object):
                     except IndexError:
                         column.append('Spalte muss leer sein!')
                     try:
-                        column.append(xls_data[0][i])
+                        column.append(xls_data[4][i])
                     except IndexError:
                         column.append('Spalte ist Leer!')
                     try:
-                        column.append(self.reference_header[i] == xls_data[0][i].strip().lower() and 'Ja' or 'Nein')
+                        column.append(self.reference_header[i] == \
+                            xls_data[4][i].strip().lower() and 'Ja' or 'Nein')
                     except IndexError:
                         column.append("Nein")
                     if column[-1] == 'Nein':
                         css_class = 'bad'
                     else:
                         css_class = 'good'
-                    columns.append({'columns' : column, 'css_class' : css_class})
+                    columns.append({'columns' : column, \
+                                    'css_class' : css_class})
                 self.header_error = columns
                 raise FrontendException()
         except TypeError, e:
-            self.errors.append('Excel Datei konnte nicht gelesen werden, evtl. mit PDF vertauscht?')
+            self.errors.append('Excel Datei konnte nicht gelesen werden, '\
+                               'evtl. mit PDF vertauscht?')
             transaction.doom()
             raise FrontendException()
         except FrontendException, e:
-            self.errors.append(u'Die Excel Datei enthält Daten, die das Programm nicht versteht')
+            self.errors.append(u'Die Excel Datei enthält Daten, '\
+                               u'die das Programm nicht versteht')
             transaction.doom()
             raise FrontendException()
 
-        for count, row in enumerate(xls_data[1:]):
-            mapping = self.portal_type_mappings[row[keys.index('type (rm, rz, pm, pasb, paz)')]]
+        for count, row in enumerate(xls_data[6:]):
+            if len([x for x in row if x]) <= 1:
+                continue
+            mapping = self.portal_type_mappings[row[keys.index('typ')]]
             data = {'portal_type' : mapping['portal_type']}
             for index, key in enumerate(keys):
                 if key not in self.ignored_fields:
@@ -226,20 +270,18 @@ class MagazineImport(object):
                     else:
                         data[mapping[key]] = row[index]
             portal_type = data.pop('portal_type')
-            try:
-                pdf_start = int(data.pop('page-start'))
-                pdf_end = int(data.pop('page-end'))
-            except ValueError:
-                transaction.doom()
-                self.errors.append(u'Die Seitenzahlen in Zeile %i sind keine gültige Zahlen, bitte korrigieren sie den Fehler und laden sie die Dateien erneut hoch.' % (count + 2))
-                pdf_start, pdf_end = 100, 101
-            data['pages'] = '%i - %i' % (pdf_start, pdf_end)
+            data['authors'] = 'firstname:%(firstname_authors_1)s,'\
+                              'lastname:%(lastname_authors_1)s' % data
+            data['pageStart'], data['pageEnd'] = map(int, [data['pageStart'], \
+                                                           data['pageEnd']])
             fname = pdf.filename
             data['pdf'] = File(id=fname, title=fname,
-                        file=self.splitPages(pdf, pdf_start, pdf_end),
+                        file=self.splitPages(pdf, data['pageStart'], \
+                                                  data['pageEnd']),
                         content_type='application/pdf')
             result = addOneItem(self.context, portal_type, data)
-            self.results.append({'name' : result.title, 'url' : result.absolute_url()})
+            self.results.append({'name' : result.title, \
+                                 'url' : result.absolute_url()})
         if self.errors:
             raise FrontendException()
 
@@ -260,4 +302,3 @@ class MagazineImport(object):
         fakefile = StringIO()
         writer.write(fakefile)
         return fakefile
-
