@@ -169,7 +169,7 @@ class MagazineImport(object):
            ,'optionales zitierschema' : 'customCitation'}
         ,'paj' : {
             'portal_type' : PresentationArticleReview
-           ,'isbn/issn' : 'isbn'
+           ,'isbn/issn' : 'issn'
            ,'jahr' : 'yearOfPublication'
            ,'rez. nachname' : 'reviewAuthorLastname'
            ,'rez. vorname' : 'reviewAuthorFirstname'
