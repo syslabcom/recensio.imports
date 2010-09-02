@@ -8,6 +8,8 @@ from recensio.contenttypes.content.presentationarticlereview import \
     PresentationArticleReview
 from recensio.contenttypes.content.presentationmonograph import \
     PresentationMonograph
+from recensio.contenttypes.content.presentationonlineresource import \
+    PresentationOnlineResource
 from recensio.contenttypes.content.reviewjournal import ReviewJournal
 from swiss.tabular import XlsReader
 from recensio.contenttypes.content.reviewmonograph import ReviewMonograph
@@ -117,7 +119,7 @@ class MagazineImport(object):
            ,'rj' : 'ignore'
            ,'partner url' : 'ignore'
            ,'optionales zitierschema' : 'customCitation'}
-        ,'rz' : {
+        ,'rj' : {
             'portal_type' : ReviewJournal
            ,'isbn/issn' : 'issn'
            ,'jahr' : 'yearOfPublication'
@@ -149,7 +151,7 @@ class MagazineImport(object):
            ,'rj' : 'ignore'
            ,'partner url' : 'ignore'
            ,'optionales zitierschema' : 'customCitation'}
-        ,'pasb' : {
+        ,'pace' : {
             'portal_type' : PresentationCollection
            ,'isbn/issn' : 'isbn'
            ,'jahr' : 'yearOfPublication'
@@ -165,7 +167,7 @@ class MagazineImport(object):
            ,'typ' : 'ignore'
            ,'partner url' : 'ignore'
            ,'optionales zitierschema' : 'customCitation'}
-        ,'paz' : {
+        ,'paj' : {
             'portal_type' : PresentationArticleReview
            ,'isbn/issn' : 'isbn'
            ,'jahr' : 'yearOfPublication'
@@ -182,8 +184,25 @@ class MagazineImport(object):
            ,'rj' : 'ignore'
            ,'typ' : 'ignore'
            ,'optionales zitierschema' : 'customCitation'}
+        ,'por' : {
+            'portal_type' : PresentationOnlineResource
+           ,'isbn/issn' : 'isbn'
+           ,'jahr' : 'yearOfPublication'
+           ,'rez. nachname' : 'reviewAuthorLastname'
+           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'autor vorname' : 'firstname_authors_1'
+           ,'autor nachname' : 'lastname_authors_1'
+           ,'titel werk' : 'title'
+           ,'start' : 'pageStart'
+           ,'ende' : 'pageEnd'
+           ,'typ' : 'ignore'
+           ,'partner url' : 'ignore'
+           ,'review journal' : 'ignore'
+           ,'rj' : 'ignore'
+           ,'typ' : 'ignore'
+           ,'optionales zitierschema' : 'customCitation'}
+
         }
-    portal_type_mappings[''] = portal_type_mappings['rz']
     ignored_fields = ['typ', '']
 
     reference_header = ['', u'isbn/issn', u'jahr', u'rez. vorname', \
