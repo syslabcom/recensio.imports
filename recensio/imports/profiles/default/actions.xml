@@ -10,7 +10,7 @@
       name="url_expr">string:${globals_view/getCurrentFolderUrl}/magazine_import</property>
    <property name="link_target"></property>
    <property name="icon_expr"></property>
-   <property name="available_expr">object/displayContentsTab</property>
+   <property name="available_expr">python: object.portal_type in ['Issue', 'Volume']</property>
    <property name="permissions">
     <element value="Add portal content"/>
    </property>
