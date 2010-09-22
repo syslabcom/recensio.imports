@@ -116,8 +116,10 @@ class MagazineImport(object):
            ,'ende' : 'pageEnd'
            ,'typ' : 'ignore'
            ,'review journal' : 'ignore'
+           ,'rez.sprache' : 'languageReview'
+           ,'textsprache' : 'languageReviewedText'
            ,'rj' : 'ignore'
-           ,'partner url' : 'ignore'
+           ,'partner url' : 'uri'
            ,'optionales zitierschema' : 'customCitation'}
         ,'rj' : {
             'portal_type' : ReviewJournal
@@ -133,7 +135,9 @@ class MagazineImport(object):
            ,'typ' : 'ignore'
            ,'review journal' : 'ignore'
            ,'rj' : 'ignore'
-           ,'partner url' : 'ignore'
+           ,'rez.sprache' : 'languageReview'
+           ,'textsprache' : 'languageReviewedText'
+           ,'partner url' : 'uri'
            ,'optionales zitierschema' : 'customCitation'}
         ,'pm' : {
             'portal_type' : PresentationMonograph
@@ -207,11 +211,12 @@ class MagazineImport(object):
 
     reference_header = ['', u'isbn/issn', u'jahr', u'rez. vorname', \
         u'rez. nachname', u'autor vorname', u'autor nachname', u'titel werk', \
-        u'start', u'ende', u'typ', u'partner url', \
-        u'optionales zitierschema', '', u'review journal', u'rj']
+        u'start', u'ende', u'typ', u'rez.sprache', u'textsprache',
+        u'partner url', u'optionales zitierschema', '', u'review journal',
+        u'rj']
     unicode_convert = [u'isbn/issn', u'jahr', u'rez. vorname', \
         u'rez. nachname', u'autor vorname', u'autor nachname', u'titel werk', \
-        u'optionales zitierschema']
+        u'optionales zitierschema', u'rez.sprache', u'textsprache']
 
 
     template = ViewPageTemplateFile('templates/mag_import.pt')
@@ -275,7 +280,7 @@ class MagazineImport(object):
             raise FrontendException()
 
         for count, row in enumerate(xls_data[6:]):
-            if len([x for x in row if x]) <= 1:
+            if len([x for x in row[1:15] if x]) <= 1:
                 continue
             mapping = self.portal_type_mappings[row[keys.index('typ')]]
             data = {'portal_type' : mapping['portal_type']}
