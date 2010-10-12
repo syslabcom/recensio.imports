@@ -9,25 +9,25 @@
 
 <metal:content-core fill-slot="content-core">
     <div id="mag-upload">
-        <h1>Dieser View dient dem Upload von Rezensionen</h1>
+        <h1 i18n:translate="upload_translations_view">Dieser View dient dem Upload von Rezensionen</h1>
         <form name="mag_upload" method="POST" enctype="multipart/form-data"
             tal:condition="not: view/import_successful">
             <p>
-                <label for="pdf">PDF Datei</label>
+                <label for="pdf" i18n:translate="pdf_file">PDF-Datei</label>
                 <input type="file" name="pdf" />
             </p>
             <p>
-                <label for="xls">XLS Datei</label>
+                <label for="xls" i18n:translate="xls_file">XLS-Datei</label>
                 <input type="file" name="xls" />
             </p>
             <p>
                 <input type="submit" value="Importieren" />
             </p>
             <div class="errors" tal:condition="view/header_error">
-                <p>
+                <p i18n:translate="wrong_excel_file_format">
 Das Format der Excel Datei scheint falsch zu sein.
                 </p>
-                <p>
+                <p i18n:translate="wrong_excel_file_format_explanation">
 Die erste Zeile muss die Information enthalten, was die Spalten bedeuten.
 Es müssen genau %i Spalten sein. Auch zusätzliche Spalten die nur Leerzeichen
 enthalten sind nicht zulässig. Die Gross.- und Kleinschreibung bei den
@@ -38,9 +38,9 @@ Hier ist das Ergebnis der Auswertung:
                 </p>
                 <table>
                     <tr>
-                        <th>Soll</th>
-                        <th>Ist</th>
-                        <th>Akzeptiert</th>
+                        <th i18n:translate="target">Soll</th>
+                        <th i18n:translate="actual">Ist</th>
+                        <th i18n:translate="accepted">Akzeptiert</th>
                     </tr>
                     <tr class=""
                         tal:repeat="row view/header_error"
@@ -52,7 +52,7 @@ Hier ist das Ergebnis der Auswertung:
             </div>
         </form>
         <div class="success" tal:condition="view/import_successful">
-            <p>Alle Dokumente konnten importiert werden. Dies sind die neuen Dokumente:</p>
+            <p i18n:translate="all_documents_imported">Alle Dokumente konnten importiert werden. Dies sind die neuen Dokumente:</p>
             <ul>
                 <li tal:repeat="result view/results">
                     <a href=""
