@@ -1,7 +1,24 @@
 # -*- coding: utf-8 -*-
-from OFS.Image import File
-from Products.statusmessages.interfaces import IStatusMessage
 from cStringIO import StringIO
+from sha import sha
+import urllib2
+import xmlrpclib
+
+from swiss.tabular import XlsReader
+import pyPdf
+from pyPdf.utils import PdfReadError
+
+from OFS.Image import File
+from zc.testbrowser.browser import Browser
+from zope.component import getUtility
+import transaction
+
+from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.statusmessages.interfaces import IStatusMessage
+from plone.app.registry.browser import controlpanel
+from plone.registry.interfaces import IRegistry
+
 from recensio.contenttypes.content.presentationcollection import \
     PresentationCollection
 from recensio.contenttypes.content.presentationarticlereview import \
@@ -11,24 +28,13 @@ from recensio.contenttypes.content.presentationmonograph import \
 from recensio.contenttypes.content.presentationonlineresource import \
     PresentationOnlineResource
 from recensio.contenttypes.content.reviewjournal import ReviewJournal
-from swiss.tabular import XlsReader
 from recensio.contenttypes.content.reviewmonograph import ReviewMonograph
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.Five.browser import BrowserView
-from zc.testbrowser.browser import Browser
-from plone.app.registry.browser import controlpanel
-from pyPdf.utils import PdfReadError
-from zope.component import getUtility
-from plone.registry.interfaces import IRegistry
-import pyPdf
-import transaction
-import urllib2
-import xmlrpclib
-from sha import sha
+from recensio.contenttypes.setuphandlers import addOneItem
+from recensio.policy import recensioMessageFactory as _
 
 from recensio.imports.interfaces import IRecensioImport, \
     IRecensioImportConfiguration
-from recensio.contenttypes.setuphandlers import addOneItem
+
 
 def viewPage(br):
     file('/tmp/bla.html', 'w').write(str(br.contents))
@@ -250,17 +256,19 @@ class MagazineImport(object):
                     try:
                         column.append(self.reference_header[i])
                     except IndexError:
-                        column.append('Spalte muss leer sein!')
+                        column.append(_('Spalte muss leer sein!'))
                     try:
                         column.append(xls_data[4][i])
                     except IndexError:
-                        column.append('Spalte ist Leer!')
+                        column.append(_('Spalte ist Leer!'))
                     try:
                         column.append(self.reference_header[i] == \
-                            xls_data[4][i].strip().lower() and 'Ja' or 'Nein')
+                            xls_data[4][i].strip().lower() and \
+                                      _('Ja') or _('Nein')
+                                      )
                     except IndexError:
-                        column.append("Nein")
-                    if column[-1] == 'Nein':
+                        column.append(_("Nein"))
+                    if column[-1] == _('Nein'):
                         css_class = 'bad'
                     else:
                         css_class = 'good'
@@ -269,13 +277,13 @@ class MagazineImport(object):
                 self.header_error = columns
                 raise FrontendException()
         except TypeError, e:
-            self.errors.append('Excel Datei konnte nicht gelesen werden, '\
-                               'evtl. mit PDF vertauscht?')
+            self.errors.append(_(u'Excel Datei konnte nicht gelesen werden, '
+                                 'evtl. mit PDF vertauscht?'))
             transaction.doom()
             raise FrontendException()
         except FrontendException, e:
-            self.errors.append(u'Die Excel Datei enthält Daten, '\
-                               u'die das Programm nicht versteht')
+            self.errors.append(_(u'Die Excel Datei enthält Daten, '
+                                 'die das Programm nicht versteht'))
             transaction.doom()
             raise FrontendException()
 
@@ -314,7 +322,7 @@ class MagazineImport(object):
             reader = pyPdf.PdfFileReader(pdf)
         except PdfReadError:
             transaction.doom()
-            self.errors.append('PDF Datei kann nicht gelesen werden')
+            self.errors.append(_('PDF Datei kann nicht gelesen werden'))
             raise FrontendException()
         writer = pyPdf.PdfFileWriter()
 
