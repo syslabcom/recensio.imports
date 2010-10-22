@@ -5,6 +5,7 @@ import urllib2
 import xmlrpclib
 
 from swiss.tabular import XlsReader
+from swiss.tabular.xls import xlrd
 import pyPdf
 from pyPdf.utils import PdfReadError
 
@@ -246,6 +247,14 @@ class MagazineImport(object):
         return self.template(self)
 
     def addContent(self, xls, pdf):
+        if xls.filename == "" or pdf.filename == "":
+            self.errors.append(
+                _(u"help_import_error_file_missing",
+                  default=(u"Please ensure that you have selected both "
+                           "a PDF file and an Excel file")
+                  )
+                )
+            raise FrontendException()
         try:
             xls_data = XlsReader(xls).read().data
             keys = [x.strip().lower() for x in xls_data[4]]
@@ -284,6 +293,14 @@ class MagazineImport(object):
         except FrontendException, e:
             self.errors.append(_(u'Die Excel Datei enthält Daten, '
                                  'die das Programm nicht versteht'))
+            transaction.doom()
+            raise FrontendException()
+        except xlrd.XLRDError, e:
+            self.errors.append(
+                _(u"help_import_error_unsupported_xls",
+                  u"Please ensure that the xls file you selected is a valid "
+                  "Excel file")
+                )
             transaction.doom()
             raise FrontendException()
 
