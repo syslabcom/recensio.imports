@@ -21,7 +21,7 @@
                 <input type="file" name="xls" />
             </p>
             <p>
-                <input type="submit" value="Importieren" />
+                <input type="submit" value="Importieren" i18n:attributes="value import_label_submit" />
             </p>
             <div class="errors" tal:condition="view/header_error">
                 <p i18n:translate="wrong_excel_file_format">
@@ -63,6 +63,7 @@ Hier ist das Ergebnis der Auswertung:
                 </li>
             </ul>
         </div>
+    </div>
 </metal:content-core>
 
 </body>
