@@ -32,6 +32,7 @@ from recensio.contenttypes.content.reviewjournal import ReviewJournal
 from recensio.contenttypes.content.reviewmonograph import ReviewMonograph
 from recensio.contenttypes.setuphandlers import addOneItem
 from recensio.policy import recensioMessageFactory as _
+from recensio.policy.tools import convertToString
 
 from recensio.imports.interfaces import IRecensioImport, \
     IRecensioImportConfiguration
@@ -328,6 +329,7 @@ class MagazineImport(object):
                         file=self.splitPages(pdf, data['pageStart'], \
                                                   data['pageEnd']),
                         content_type='application/pdf')
+            data = convertToString(data)
             result = addOneItem(self.context, portal_type, data)
             self.results.append({'name' : result.title, \
                                  'url' : result.absolute_url()})
