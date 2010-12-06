@@ -222,6 +222,35 @@ class MagazineImport(object):
         u'start', u'ende', u'typ', u'rez.sprache', u'textsprache',
         u'partner url', u'optionales zitierschema', '', u'review journal',
         u'rj']
+    translate_headers = {
+        'isbn/issn werk' : 'isbn/issn'
+       ,'isbn/issn (work)' : 'isbn/issn'
+       ,'jahr werk' : 'jahr'
+       ,'year (work)' : 'jahr'
+       ,'rez. vorname' : 'rez. vorname'
+       ,'reviewer firstname' : 'rez. vorname'
+       ,'rez. nachname' : 'rez. nachname'
+       ,'reviewer last name' : 'rez. nachname'
+       ,'autor vorname' : 'autor vorname'
+       ,'author first name' : 'autor vorname'
+       ,'autor nachname' : 'autor nachname'
+       ,'author lastname' : 'autor nachname'
+       ,'titel werk' : 'titel werk'
+       ,'title of the work' : 'titel werk'
+       ,'start' : 'start'
+       ,'ende' : 'ende'
+       ,'end' : 'ende'
+       ,'typ' : 'typ'
+       ,'type' : 'typ'
+       ,'rez.sprache' : 'rez.sprache'
+       ,'language rev.' : 'rez.sprache'
+       ,'textsprache' : 'textsprache'
+       ,'language text' : 'textsprache'
+       ,'partner url' : 'partner url'
+       ,'optionales zitierschema' : 'optionales zitierschema'
+       ,'optional custom citation format' : 'optionales zitierschema'
+    }
+
     unicode_convert = [u'isbn/issn', u'jahr', u'rez. vorname', \
         u'rez. nachname', u'autor vorname', u'autor nachname', u'titel werk', \
         u'optionales zitierschema', u'rez.sprache', u'textsprache']
@@ -258,7 +287,7 @@ class MagazineImport(object):
             raise FrontendException()
         try:
             xls_data = XlsReader(xls).read().data
-            keys = [x.strip().lower() for x in xls_data[4]]
+            keys = [self.translate_headers.get(x.strip().lower(), x.strip().lower()) for x in xls_data[4]]
             if keys != self.reference_header:
                 columns = []
                 for i in range(max(len(keys), len(self.reference_header))):
@@ -273,7 +302,7 @@ class MagazineImport(object):
                         column.append(_('Spalte ist Leer!'))
                     try:
                         column.append(self.reference_header[i] == \
-                            xls_data[4][i].strip().lower() and \
+                        xls_data[4][i].strip().lower() and \
                                       _('Ja') or _('Nein')
                                       )
                     except IndexError:
