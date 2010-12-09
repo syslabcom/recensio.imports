@@ -355,7 +355,7 @@ class MagazineImport(object):
                                                            data['pageEnd']])
             fname = pdf.filename
             data['pdf'] = File(id=fname, title=fname,
-                        file=self.splitPages(pdf, data['pageStart'], \
+                        file=self.splitPages(pdf, data['pageStart']-1, \
                                                   data['pageEnd']),
                         content_type='application/pdf')
             data = convertToString(data)
