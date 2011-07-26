@@ -115,8 +115,8 @@ class MagazineImport(object):
             'portal_type' : ReviewMonograph
            ,'isbn/issn' : 'isbn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez. nachname' : 'reviewAuthorLastname'
-           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'rez. vorname' : 'firstname_review_authors_1'
+           ,'rez. nachname' : 'lastname_review_authors_1'
            ,'autor vorname' : 'firstname_authors_1'
            ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
@@ -133,8 +133,8 @@ class MagazineImport(object):
             'portal_type' : ReviewJournal
            ,'isbn/issn' : 'issn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez. nachname' : 'reviewAuthorLastname'
-           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'rez. vorname' : 'firstname_review_authors_1'
+           ,'rez. nachname' : 'lastname_review_authors_1'
            ,'autor vorname' : 'firstname_authors_1'
            ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
@@ -151,8 +151,8 @@ class MagazineImport(object):
             'portal_type' : PresentationMonograph
            ,'isbn/issn' : 'isbn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez. nachname' : 'reviewAuthorLastname'
-           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'rez. vorname' : 'firstname_review_authors_1'
+           ,'rez. nachname' : 'lastname_review_authors_1'
            ,'autor vorname' : 'firstname_authors_1'
            ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
@@ -167,8 +167,8 @@ class MagazineImport(object):
             'portal_type' : PresentationCollection
            ,'isbn/issn' : 'isbn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez. nachname' : 'reviewAuthorLastname'
-           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'rez. vorname' : 'firstname_review_authors_1'
+           ,'rez. nachname' : 'lastname_review_authors_1'
            ,'autor vorname' : 'firstname_authors_1'
            ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
@@ -183,8 +183,8 @@ class MagazineImport(object):
             'portal_type' : PresentationArticleReview
            ,'isbn/issn' : 'issn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez. nachname' : 'reviewAuthorLastname'
-           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'rez. vorname' : 'firstname_review_authors_1'
+           ,'rez. nachname' : 'lastname_review_authors_1'
            ,'autor vorname' : 'firstname_authors_1'
            ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
@@ -200,8 +200,8 @@ class MagazineImport(object):
             'portal_type' : PresentationOnlineResource
            ,'isbn/issn' : 'isbn'
            ,'jahr' : 'yearOfPublication'
-           ,'rez. nachname' : 'reviewAuthorLastname'
-           ,'rez. vorname' : 'reviewAuthorFirstname'
+           ,'rez. vorname' : 'firstname_review_authors_1'
+           ,'rez. nachname' : 'lastname_review_authors_1'
            ,'autor vorname' : 'firstname_authors_1'
            ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
@@ -251,8 +251,8 @@ class MagazineImport(object):
        ,'optional custom citation format' : 'optionales zitierschema'
     }
 
-    unicode_convert = [u'isbn/issn', u'jahr', u'rez. vorname', \
-        u'rez. nachname', u'autor vorname', u'autor nachname', u'titel werk', \
+    unicode_convert = [u'isbn/issn', u'jahr', u'rez. vorname',
+        u'rez. nachname', u'autor vorname', u'autor nachname', u'titel werk',
         u'optionales zitierschema', u'rez.sprache', u'textsprache']
 
 
@@ -264,10 +264,10 @@ class MagazineImport(object):
         self.errors = []
         self.header_error = []
         for key in ['xls', 'pdf']:
-           if key not in self.request.form.keys():
+            if key not in self.request.form.keys():
                 return self.template(self)
         try:
-           self.addContent(self.request.form['xls'], self.request.form['pdf'])
+            self.addContent(self.request.form['xls'], self.request.form['pdf'])
         except FrontendException, e:
             messages = IStatusMessage(self.request)
             for error in self.errors:
@@ -351,6 +351,8 @@ class MagazineImport(object):
             portal_type = data.pop('portal_type')
             data['authors'] = 'firstname:%(firstname_authors_1)s,'\
                               'lastname:%(lastname_authors_1)s' % data
+            data['reviewAuthors'] = 'firstname:%(firstname_review_authors_1)s,'\
+                'lastname:%(lastname_review_authors_1)s' % data
             data['pageStart'], data['pageEnd'] = map(int, [data['pageStart'], \
                                                            data['pageEnd']])
             fname = pdf.filename
