@@ -118,11 +118,11 @@ class MagazineImport(object):
            ,'jahr' : 'yearOfPublication'
            ,'rez. vorname' : 'firstname_review_authors_1'
            ,'rez. nachname' : 'lastname_review_authors_1'
-           ,'autor vorname' : 'firstname_authors_1'
-           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'start' : 'pageStart'
-           ,'ende' : 'pageEnd'
+           ,'print seite start' : 'pageStart'
+           ,'print seite ende' : 'pageEnd'
+           ,'pdf start' : 'pdfPageStart'
+           ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
            ,'review journal' : 'ignore'
            ,'rez.sprache' : 'languageReview'
@@ -136,11 +136,11 @@ class MagazineImport(object):
            ,'jahr' : 'yearOfPublication'
            ,'rez. vorname' : 'firstname_review_authors_1'
            ,'rez. nachname' : 'lastname_review_authors_1'
-           ,'autor vorname' : 'firstname_authors_1'
-           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'start' : 'pageStart'
-           ,'ende' : 'pageEnd'
+           ,'print seite start' : 'pageStart'
+           ,'print seite ende' : 'pageEnd'
+           ,'pdf start' : 'pdfPageStart'
+           ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
            ,'review journal' : 'ignore'
            ,'rj' : 'ignore'
@@ -154,11 +154,11 @@ class MagazineImport(object):
            ,'jahr' : 'yearOfPublication'
            ,'rez. vorname' : 'firstname_review_authors_1'
            ,'rez. nachname' : 'lastname_review_authors_1'
-           ,'autor vorname' : 'firstname_authors_1'
-           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'start' : 'pageStart'
-           ,'ende' : 'pageEnd'
+           ,'print seite start' : 'pageStart'
+           ,'print seite ende' : 'pageEnd'
+           ,'pdf start' : 'pdfPageStart'
+           ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
            ,'review journal' : 'ignore'
            ,'rj' : 'ignore'
@@ -170,11 +170,11 @@ class MagazineImport(object):
            ,'jahr' : 'yearOfPublication'
            ,'rez. vorname' : 'firstname_review_authors_1'
            ,'rez. nachname' : 'lastname_review_authors_1'
-           ,'autor vorname' : 'firstname_authors_1'
-           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'start' : 'pageStart'
-           ,'ende' : 'pageEnd'
+           ,'print seite start' : 'pageStart'
+           ,'print seite ende' : 'pageEnd'
+           ,'pdf start' : 'pdfPageStart'
+           ,'pdf ende' : 'pdfPageEnd'
            ,'review journal' : 'ignore'
            ,'rj' : 'ignore'
            ,'typ' : 'ignore'
@@ -186,11 +186,11 @@ class MagazineImport(object):
            ,'jahr' : 'yearOfPublication'
            ,'rez. vorname' : 'firstname_review_authors_1'
            ,'rez. nachname' : 'lastname_review_authors_1'
-           ,'autor vorname' : 'firstname_authors_1'
-           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'start' : 'pageStart'
-           ,'ende' : 'pageEnd'
+           ,'print seite start' : 'pageStart'
+           ,'print seite ende' : 'pageEnd'
+           ,'pdf start' : 'pdfPageStart'
+           ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
            ,'partner url' : 'ignore'
            ,'review journal' : 'ignore'
@@ -203,11 +203,11 @@ class MagazineImport(object):
            ,'jahr' : 'yearOfPublication'
            ,'rez. vorname' : 'firstname_review_authors_1'
            ,'rez. nachname' : 'lastname_review_authors_1'
-           ,'autor vorname' : 'firstname_authors_1'
-           ,'autor nachname' : 'lastname_authors_1'
            ,'titel werk' : 'title'
-           ,'start' : 'pageStart'
-           ,'ende' : 'pageEnd'
+           ,'print seite start' : 'pageStart'
+           ,'print seite ende' : 'pageEnd'
+           ,'pdf start' : 'pdfPageStart'
+           ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
            ,'partner url' : 'ignore'
            ,'review journal' : 'ignore'
@@ -218,11 +218,13 @@ class MagazineImport(object):
         }
     ignored_fields = ['typ', '']
 
-    reference_header = ['', u'isbn/issn', u'jahr', u'rez. vorname', \
-        u'rez. nachname', u'autor vorname', u'autor nachname', u'titel werk', \
-        u'start', u'ende', u'typ', u'rez.sprache', u'textsprache',
-        u'partner url', u'optionales zitierschema', '', u'review journal',
-        u'rj']
+    reference_header = ['', u'isbn/issn', u'jahr', u'rez. vorname',
+                        u'rez. nachname', u'titel werk', u'print seite start',
+                        u'print seite ende', u'pdf start', u'pdf ende',
+                        u'typ', u'rez.sprache',
+                        u'textsprache', u'partner url',
+                        u'optionales zitierschema', '', u'review journal',
+                        u'rj']
     translate_headers = {
         'isbn/issn werk' : 'isbn/issn'
        ,'isbn/issn (work)' : 'isbn/issn'
@@ -232,15 +234,15 @@ class MagazineImport(object):
        ,'reviewer firstname' : 'rez. vorname'
        ,'rez. nachname' : 'rez. nachname'
        ,'reviewer last name' : 'rez. nachname'
-       ,'autor vorname' : 'autor vorname'
-       ,'author first name' : 'autor vorname'
-       ,'autor nachname' : 'autor nachname'
-       ,'author lastname' : 'autor nachname'
        ,'titel werk' : 'titel werk'
        ,'title of the work' : 'titel werk'
-       ,'start' : 'start'
-       ,'ende' : 'ende'
-       ,'end' : 'ende'
+       ,'print seite start' : 'print seite start'
+       ,'print start page' : 'print seite start'
+       ,'print seite ende' : 'print seite ende'
+       ,'print end page' : 'print seite ende'
+       ,'pdf start' : 'pdf start'
+       ,'pdf ende' : 'pdf ende'
+       ,'pdf end' : 'pdf ende'
        ,'typ' : 'typ'
        ,'type' : 'typ'
        ,'rez.sprache' : 'rez.sprache'
@@ -253,7 +255,7 @@ class MagazineImport(object):
     }
 
     unicode_convert = [u'isbn/issn', u'jahr', u'rez. vorname',
-        u'rez. nachname', u'autor vorname', u'autor nachname', u'titel werk',
+        u'rez. nachname', u'titel werk',
         u'optionales zitierschema', u'rez.sprache', u'textsprache']
 
     template = ViewPageTemplateFile('templates/mag_import.pt')
@@ -353,21 +355,24 @@ class MagazineImport(object):
                     else:
                         data[mapping[key]] = row[index]
             portal_type = data.pop('portal_type')
-            data['authors'] = 'firstname:%(firstname_authors_1)s,'\
-                              'lastname:%(lastname_authors_1)s' % data
             data['reviewAuthors'] = 'firstname:%(firstname_review_authors_1)s,'\
                 'lastname:%(lastname_review_authors_1)s' % data
-            data['pageStart'], data['pageEnd'] = map(int, [data['pageStart'], \
+            data['pageStart'], data['pageEnd'] = map(int, [data['pageStart'],
                                                            data['pageEnd']])
+            data['pdfPageStart'], data['pdfPageEnd'] = \
+                map(int, [data['pdfPageStart'],
+                          data['pdfPageEnd']])
             data['languageReview'] =\
                 self.convertLanguages(data['languageReview'])
             data['languageReviewedText'] =\
                 self.convertLanguages(data['languageReviewedText'])
             fname = pdf.filename
             data['pdf'] = File(id=fname, title=fname,
-                        file=self.splitPages(pdf, data['pageStart']-1, \
-                                                  data['pageEnd']),
+                        file=self.splitPages(pdf, data['pdfPageStart']-1, \
+                                                  data['pdfPageEnd']), 
                         content_type='application/pdf')
+            del data['pdfPageStart']
+            del data['pdfPageEnd']
             data = convertToString(data)
             result = addOneItem(self.context, portal_type, data)
             self.results.append({'name' : result.title, \
@@ -410,8 +415,10 @@ class MagazineImport(object):
 
     @property
     def supported_languages(self):
-        util = getUtility(IVocabularyFactory,
-                          'recensio.policy.vocabularies.'
-                          'available_content_languages')
-        vocab = util(self)
-        return vocab.by_token.keys()
+        if not hasattr(self, '_supported_languages'):
+            util = getUtility(IVocabularyFactory,
+                              'recensio.policy.vocabularies.'
+                              'available_content_languages')
+            vocab = util(self)
+            self._supported_languages = vocab.by_token.keys()
+        return self._supported_languages
