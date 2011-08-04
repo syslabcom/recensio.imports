@@ -11,6 +11,7 @@ from pyPdf.utils import PdfReadError
 
 from OFS.Image import File
 from zc.testbrowser.browser import Browser
+from zope.app.schema.vocabulary import IVocabularyFactory
 from zope.component import getUtility
 import transaction
 
@@ -255,8 +256,11 @@ class MagazineImport(object):
         u'rez. nachname', u'autor vorname', u'autor nachname', u'titel werk',
         u'optionales zitierschema', u'rez.sprache', u'textsprache']
 
-
     template = ViewPageTemplateFile('templates/mag_import.pt')
+
+    def __init__(self, *args, **kwargs):
+        self.warnings = []
+        super(MagazineImport, self).__init__(*args, **kwargs)
 
     def __call__(self):
         self.import_successful = False
@@ -355,6 +359,10 @@ class MagazineImport(object):
                 'lastname:%(lastname_review_authors_1)s' % data
             data['pageStart'], data['pageEnd'] = map(int, [data['pageStart'], \
                                                            data['pageEnd']])
+            data['languageReview'] =\
+                self.convertLanguages(data['languageReview'])
+            data['languageReviewedText'] =\
+                self.convertLanguages(data['languageReviewedText'])
             fname = pdf.filename
             data['pdf'] = File(id=fname, title=fname,
                         file=self.splitPages(pdf, data['pageStart']-1, \
@@ -384,3 +392,26 @@ class MagazineImport(object):
         fakefile = StringIO()
         writer.write(fakefile)
         return fakefile
+
+    def convertLanguages(self, data):
+        data = data.replace(';', ' ').replace('.', ' ')\
+            .replace(':', ' ').replace(',', ' ')
+        data = [x.strip().lower() for x in data.split() if x.strip()]
+        retval = []
+        for lang in data:
+            if lang in self.supported_languages:
+                retval.append(lang)
+            else:
+                warning = _('The language "${lang}" is unknown',
+                            default='Die Sprache "${lang}" is unbekannt',
+                            mapping={"lang": lang})
+                self.warnings.append(warning)
+        return tuple(retval)
+
+    @property
+    def supported_languages(self):
+        util = getUtility(IVocabularyFactory,
+                          'recensio.policy.vocabularies.'
+                          'available_content_languages')
+        vocab = util(self)
+        return vocab.by_token.keys()

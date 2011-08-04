@@ -51,6 +51,12 @@ Hier ist das Ergebnis der Auswertung:
                 </table>
             </div>
         </form>
+        <div class="warning" tal:condition="view/warnings">
+          <p i18n:translate="msg_warnings_on_import">Bei einigen Dokumenten konnten nicht alle Informationen verarbeitet werden</p>
+          <ul>
+            <li tal:repeat="warning view/warnings" tal:content="warning">Warnung</li>
+          </ul>
+        </div>
         <div class="success" tal:condition="view/import_successful">
             <p i18n:translate="all_documents_imported">Alle Dokumente konnten importiert werden. Dies sind die neuen Dokumente:</p>
             <ul>
