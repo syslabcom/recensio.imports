@@ -101,6 +101,7 @@ class MagazineImport(object):
         self.import_successful = False
         self.results = []
         self.header_error = []
+        self.excel_converter = ExcelConverter()
         super(MagazineImport, self).__init__(*args, **kwargs)
 
     def __call__(self):
@@ -118,22 +119,29 @@ class MagazineImport(object):
         return self.template(self)
 
     def addPDFContent(self, xls, pdf):
-        excel_converter = ExcelConverter()
         try:
-            results = excel_converter(xls)
+            results = self.excel_converter(xls)
         except Exception, e:
             self.errors.append(str(e))
             transaction.doom()
             raise FrontendException()
+        finally:
+            self.warnings = self.excel_converter.warnings
         pdf_name = pdf.filename
         for result in results:
-            start, end = [int(data.pop('pdfPage' + x)) for x in 'Start', 'End']
-            module, class_ = data.pop('portal_type')
-            portal_type = getattr(__import__(module), class_)
-            data['pdf'] = cutPDF(pdf, start, end)
-            result = addOneItem(self.context, portal_type, data)
-            self.results.append({'name' : result.title, \
-                                 'url' : result.absolute_url()})
+            start, end = [int(result.pop('pdfPage' + x)) for x in 'Start', 'End']
+            module, class_ = result.pop('portal_type')
+            portal_type = self.type_getter(module, class_)
+            result['pdf'] = cutPDF(pdf, start, end)
+            result_item = addOneItem(self.context, portal_type, result)
+            self.results.append({'name' : result_item.title, \
+                                 'url' : result_item.absolute_url()})
 
         if self.errors:
             raise FrontendException()
+
+    def type_getter(self, module_path, class_):
+        module = __import__(module_path)
+        for modname in module_path.split('.')[1:]:
+            module = getattr(module, modname)
+        return getattr(module, class_)

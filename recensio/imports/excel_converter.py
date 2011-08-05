@@ -4,6 +4,7 @@ from swiss.tabular import XlsReader
 from zope.app.schema.vocabulary import IVocabularyFactory
 from zope.component import getUtility
 
+from recensio.policy import recensioMessageFactory as _
 from recensio.policy.tools import convertToString
 
 class ExcelConverter(object):
@@ -166,7 +167,10 @@ class ExcelConverter(object):
 
         }
 
-    def __call__(self, xls_file, pdf_file):
+    def __init__(self):
+        self.warnings = []
+
+    def __call__(self, xls_file):
         try:
             xls_data = XlsReader(xls_file).read().data
         except TypeError:
@@ -222,7 +226,6 @@ class ExcelConverter(object):
                             data[mapping[key]] = unicode(row[index])
                     else:
                         data[mapping[key]] = row[index]
-            data.pop('portal_type')
             data['reviewAuthors'] = 'firstname:%(firstname_review_authors_1)s,'\
                 'lastname:%(lastname_review_authors_1)s' % data
             data['pageStart'], data['pageEnd'] = map(int, [data['pageStart'],
