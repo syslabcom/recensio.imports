@@ -17,7 +17,7 @@ from recensio.policy import recensioMessageFactory as _
 
 from recensio.imports.interfaces import IRecensioImport, \
     IRecensioImportConfiguration
-from recensio.imports.excel_convert import ExcelConverter
+from recensio.imports.excel_converter import ExcelConverter
 from recensio.imports.pdf_cut import cutPDF
 
 

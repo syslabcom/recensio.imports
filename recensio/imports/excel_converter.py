@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from swiss.tabular import XlsReader
 from zope.app.schema.vocabulary import IVocabularyFactory
 from zope.component import getUtility
