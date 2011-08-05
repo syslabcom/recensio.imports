@@ -10,6 +10,8 @@
 <metal:content-core fill-slot="content-core">
     <div id="mag-upload">
         <h1 i18n:translate="upload_translations_view">Dieser View dient dem Upload von Rezensionen</h1>
+        <div i18n:translate="msg_excel_or_zip_upload">Entweder, sie laden hier eine Excel und eine ZIP Datei hoch, oder sie laden eine ZIP Datei hoch, welche genau eine Excel Datei und beliebig viele Word Dateien enthält
+        </div>
         <form name="mag_upload" method="POST" enctype="multipart/form-data"
             tal:condition="not: view/import_successful">
             <p>
@@ -19,6 +21,10 @@
             <p>
                 <label for="xls" i18n:translate="xls_file">XLS-Datei</label>
                 <input type="file" name="xls" />
+            </p>
+            <p>
+                <label for="zip" i18n:translate="label_zip_file">ZIP-Datei</label>
+                <input type="file" name="zip" />
             </p>
             <p>
                 <input type="submit" value="Importieren" i18n:attributes="value import_label_submit" />
