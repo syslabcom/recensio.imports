@@ -3,6 +3,7 @@
 from swiss.tabular import XlsReader
 from zope.app.schema.vocabulary import IVocabularyFactory
 from zope.component import getUtility
+import xlrd
 
 from recensio.policy import recensioMessageFactory as _
 from recensio.policy.tools import convertToString
@@ -46,13 +47,20 @@ class ExcelConverter(object):
         u'rez. nachname', u'titel werk',
         u'optionales zitierschema', u'rez.sprache', u'textsprache']
 
-    reference_header = ['', u'isbn/issn', u'jahr', u'rez. vorname',
-                        u'rez. nachname', u'titel werk', u'print seite start',
-                        u'print seite ende', u'pdf start', u'pdf ende',
-                        u'typ', u'rez.sprache',
-                        u'textsprache', u'partner url',
-                        u'optionales zitierschema', '', u'review journal',
-                        u'rj']
+    reference_header_zip = ['', u'isbn/issn', u'jahr', u'rez. vorname',
+                            u'rez. nachname', u'titel werk', u'print seite start',
+                            u'print seite ende', u'filename',
+                            u'typ', u'rez.sprache',
+                            u'textsprache', u'partner url',
+                            u'optionales zitierschema', '', '', u'review journal',
+                            u'rj']
+    reference_header_xls = ['', u'isbn/issn', u'jahr', u'rez. vorname',
+                            u'rez. nachname', u'titel werk', u'print seite start',
+                            u'print seite ende', u'pdf start', u'pdf ende',
+                            u'typ', u'rez.sprache',
+                            u'textsprache', u'partner url',
+                            u'optionales zitierschema', '', u'review journal',
+                            u'rj']
 
     portal_type_mappings =  {
         'rm' : {
@@ -65,6 +73,7 @@ class ExcelConverter(object):
            ,'titel werk' : 'title'
            ,'print seite start' : 'pageStart'
            ,'print seite ende' : 'pageEnd'
+           ,'filename' : 'filename'
            ,'pdf start' : 'pdfPageStart'
            ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
@@ -84,6 +93,7 @@ class ExcelConverter(object):
            ,'titel werk' : 'title'
            ,'print seite start' : 'pageStart'
            ,'print seite ende' : 'pageEnd'
+           ,'filename' : 'filename'
            ,'pdf start' : 'pdfPageStart'
            ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
@@ -103,6 +113,7 @@ class ExcelConverter(object):
            ,'titel werk' : 'title'
            ,'print seite start' : 'pageStart'
            ,'print seite ende' : 'pageEnd'
+           ,'filename' : 'filename'
            ,'pdf start' : 'pdfPageStart'
            ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
@@ -120,6 +131,7 @@ class ExcelConverter(object):
            ,'titel werk' : 'title'
            ,'print seite start' : 'pageStart'
            ,'print seite ende' : 'pageEnd'
+           ,'filename' : 'filename'
            ,'pdf start' : 'pdfPageStart'
            ,'pdf ende' : 'pdfPageEnd'
            ,'review journal' : 'ignore'
@@ -137,6 +149,7 @@ class ExcelConverter(object):
            ,'titel werk' : 'title'
            ,'print seite start' : 'pageStart'
            ,'print seite ende' : 'pageEnd'
+           ,'filename' : 'filename'
            ,'pdf start' : 'pdfPageStart'
            ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
@@ -156,6 +169,7 @@ class ExcelConverter(object):
            ,'titel werk' : 'title'
            ,'print seite start' : 'pageStart'
            ,'print seite ende' : 'pageEnd'
+           ,'filename' : 'filename'
            ,'pdf start' : 'pdfPageStart'
            ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
@@ -170,7 +184,13 @@ class ExcelConverter(object):
     def __init__(self):
         self.warnings = []
 
-    def __call__(self, xls_file):
+    def convert_zip(self, xls_file):
+        return self.convert(xls_file, self.reference_header_zip)
+
+    def convert_xls(self, xls_file):
+        return self.convert(xls_file, self.reference_header_xls)
+
+    def convert(self, xls_file, reference_header):
         try:
             xls_data = XlsReader(xls_file).read().data
         except TypeError:
@@ -182,12 +202,12 @@ class ExcelConverter(object):
                               "Excel file"))
 
         keys = [self.translate_headers.get(x.strip().lower(), x.strip().lower()) for x in xls_data[4]]
-        if keys != self.reference_header:
+        if keys != reference_header:
             columns = []
-            for i in range(max(len(keys), len(self.reference_header))):
+            for i in range(max(len(keys), len(reference_header))):
                 column = []
                 try:
-                    column.append(self.reference_header[i])
+                    column.append(reference_header[i])
                 except IndexError:
                     column.append(_('Spalte muss leer sein!'))
                 try:
@@ -195,7 +215,7 @@ class ExcelConverter(object):
                 except IndexError:
                     column.append(_('Spalte ist Leer!'))
                 try:
-                    column.append(self.reference_header[i] == \
+                    column.append(reference_header[i] == \
                                       xls_data[4][i].strip().lower() and \
                                       _('Ja') or _('Nein')
                                       )

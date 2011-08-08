@@ -19,7 +19,7 @@ from recensio.imports.interfaces import IRecensioImport, \
     IRecensioImportConfiguration
 from recensio.imports.excel_converter import ExcelConverter
 from recensio.imports.pdf_cut import cutPDF
-
+from recensio.imports.zip_extractor import ZipExtractor
 
 def viewPage(br):
     file('/tmp/bla.html', 'w').write(str(br.contents))
@@ -102,25 +102,33 @@ class MagazineImport(object):
         self.results = []
         self.header_error = []
         self.excel_converter = ExcelConverter()
+        self.zip_extractor = ZipExtractor()
         super(MagazineImport, self).__init__(*args, **kwargs)
 
     def __call__(self):
-        for key in ['xls', 'pdf']:
-            if key not in self.request.form.keys():
-                return self.template(self)
-        try:
-            self.addPDFContent(self.request.form['xls'], self.request.form['pdf'])
-        except FrontendException, e:
-            messages = IStatusMessage(self.request)
-            for error in self.errors:
-                messages.addStatusMessage(error, type='error')
-            return self.template(self)
-        self.import_successful = True
+        req_has_key = lambda x: x in self.request.form.keys() and\
+            self.request.form[x].filename
+        if (req_has_key('xls') and req_has_key('pdf')) :
+            try:
+                self.addPDFContent(self.request.form['xls'], self.request.form['pdf'])
+            except FrontendException, e:
+                messages = IStatusMessage(self.request)
+                for error in self.errors:
+                    messages.addStatusMessage(error, type='error')
+            self.import_successful = True
+        elif req_has_key('zip'):
+            try:
+                self.addZIPContent(self.request.form['zip'])
+            except FrontendException, e:
+                messages = IStatusMessage(self.request)
+                for error in self.errors:
+                    messages.addStatusMessage(error, type='error')
+            self.import_successful = True
         return self.template(self)
 
     def addPDFContent(self, xls, pdf):
         try:
-            results = self.excel_converter(xls)
+            results = self.excel_converter.convert_xls(xls)
         except Exception, e:
             self.errors.append(str(e))
             transaction.doom()
@@ -136,7 +144,30 @@ class MagazineImport(object):
             result_item = addOneItem(self.context, portal_type, result)
             self.results.append({'name' : result_item.title, \
                                  'url' : result_item.absolute_url()})
+        if self.errors:
+            raise FrontendException()
 
+    def addZIPContent(self, zipfile):
+        xls, docs = self.zip_extractor(zipfile)
+        try:
+            results = [x for x in self.excel_converter.convert_zip(xls)]
+        except Exception, e:
+            self.errors.append(str(e))
+            transaction.doom()
+            raise FrontendException()
+        finally:
+            self.warnings = self.excel_converter.warnings
+        if len(docs) != len(results):
+            self.errors.append(_("The number of documents in the zip file do not match the number of entries in the excel file"))
+            transaction.doom()
+            raise FrontendException()
+        for result, doc in zip(results, docs):
+            result['doc'] = doc
+            module, class_ = result.pop('portal_type')
+            portal_type = self.type_getter(module, class_)
+            result_item = addOneItem(self.context, portal_type, result)
+            self.results.append({'name' : result_item.title, \
+                                 'url' : result_item.absolute_url()})
         if self.errors:
             raise FrontendException()
 
