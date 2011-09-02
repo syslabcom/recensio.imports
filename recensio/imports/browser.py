@@ -148,8 +148,8 @@ class MagazineImport(object):
             raise FrontendException()
 
     def addZIPContent(self, zipfile):
-        xls, docs = self.zip_extractor(zipfile)
         try:
+            xls, docs = self.zip_extractor(zipfile)
             results = [x for x in self.excel_converter.convert_zip(xls)]
         except Exception, e:
             self.errors.append(str(e))
