@@ -239,9 +239,9 @@ class ExcelConverter(object):
                 mapping = self.portal_type_mappings[row[keys.index('typ')]]
             except KeyError, e:
                 raise KeyError(_(u'Die Excep Datei enthält Daten, '
-                                 'die das Programm nicht versteht.'
-                                 ' Bitte prüfen Sie, ob jeder Date'
-                                 'nsatz einen Typ angegeben hat.'))
+                                 u'die das Programm nicht versteht.'
+                                 u' Bitte prüfen Sie, ob jeder Date'
+                                 u'nsatz einen Typ angegeben hat.'))
             data = {'portal_type' : mapping['portal_type']}
             for index, key in enumerate(keys):
                 if key not in self.ignored_fields:
