@@ -5,6 +5,7 @@ import xmlrpclib
 from zc.testbrowser.browser import Browser
 from zope.component import getUtility
 import transaction
+from logging import getLogger
 
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -20,6 +21,9 @@ from recensio.imports.interfaces import IRecensioImport, \
 from recensio.imports.excel_converter import ExcelConverter
 from recensio.imports.pdf_cut import cutPDF
 from recensio.imports.zip_extractor import ZipExtractor
+
+log = getLogger('recensio.imports.browser')
+
 
 def viewPage(br):
     file('/tmp/bla.html', 'w').write(str(br.contents))
@@ -130,6 +134,7 @@ class MagazineImport(object):
         try:
             results = self.excel_converter.convert_xls(xls)
         except Exception, e:
+            log.exception(str(e))
             self.errors.append(str(e))
             transaction.doom()
             raise FrontendException()
@@ -137,7 +142,7 @@ class MagazineImport(object):
             self.warnings = self.excel_converter.warnings
         pdf_name = pdf.filename
         for result in results:
-            start, end = [int(result.pop('pdfPage' + x)) for x in 'Start', 'End']
+            start, end = [int(result.pop('pdfPage' + x) or 0) for x in 'Start', 'End']
             module, class_ = result.pop('portal_type')
             portal_type = self.type_getter(module, class_)
             result['pdf'] = cutPDF(pdf, start, end)
@@ -152,6 +157,7 @@ class MagazineImport(object):
             xls, docs = self.zip_extractor(zipfile)
             results = [x for x in self.excel_converter.convert_zip(xls)]
         except Exception, e:
+            log.exception(str(e))
             self.errors.append(str(e))
             transaction.doom()
             raise FrontendException()
