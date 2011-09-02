@@ -238,9 +238,9 @@ class ExcelConverter(object):
             try:
                 mapping = self.portal_type_mappings[row[keys.index('typ')]]
             except KeyError, e:
-                raise KeyError(_(u'Die Excep Datei enthält Daten, '
+                raise KeyError(_(u'Die Excel Datei beinhaltet Daten, '
                                  u'die das Programm nicht versteht.'
-                                 u' Bitte prüfen Sie, ob jeder Date'
+                                 u' Bitte schauen Sie, ob jeder Date'
                                  u'nsatz einen Typ angegeben hat.'))
             data = {'portal_type' : mapping['portal_type']}
             for index, key in enumerate(keys):
