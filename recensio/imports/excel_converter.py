@@ -235,7 +235,13 @@ class ExcelConverter(object):
         for count, row in enumerate(xls_data[6:]):
             if len([x for x in row[1:15] if x]) <= 1:
                 continue
-            mapping = self.portal_type_mappings[row[keys.index('typ')]]
+            try:
+                mapping = self.portal_type_mappings[row[keys.index('typ')]]
+            except KeyError, e:
+                raise KeyError(_(u'Die Excep Datei enthält Daten, '
+                                 'die das Programm nicht versteht.'
+                                 ' Bitte prüfen Sie, ob jeder Date'
+                                 'nsatz einen Typ angegeben hat.'))
             data = {'portal_type' : mapping['portal_type']}
             for index, key in enumerate(keys):
                 if key not in self.ignored_fields:
