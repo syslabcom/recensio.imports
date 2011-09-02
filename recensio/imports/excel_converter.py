@@ -254,8 +254,8 @@ class ExcelConverter(object):
                         data[mapping[key]] = row[index]
             data['reviewAuthors'] = 'firstname:%(firstname_review_authors_1)s,'\
                 'lastname:%(lastname_review_authors_1)s' % data
-            data['pageStart'], data['pageEnd'] = map(int, [data['pageStart'],
-                                                           data['pageEnd']])
+            data['pageStart'], data['pageEnd'] = map(int, [data['pageStart'] or 0,
+                                                           data['pageEnd'] or 0])
             data['languageReview'] =\
                 self.convertLanguages(data['languageReview'])
             data['languageReviewedText'] =\
