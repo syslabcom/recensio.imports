@@ -12,6 +12,9 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from plone.app.registry.browser import controlpanel
 from plone.registry.interfaces import IRegistry
+from Products.Archetypes.event import ObjectInitializedEvent
+from Testing import makerequest
+from zope.event import notify
 
 from recensio.contenttypes.setuphandlers import addOneItem
 from recensio.policy import recensioMessageFactory as _
@@ -21,6 +24,7 @@ from recensio.imports.interfaces import IRecensioImport, \
 from recensio.imports.excel_converter import ExcelConverter
 from recensio.imports.pdf_cut import cutPDF
 from recensio.imports.zip_extractor import ZipExtractor
+from plone.app.blob.content import ATBlob
 
 log = getLogger('recensio.imports.browser')
 
@@ -119,6 +123,12 @@ class MagazineImport(object):
                 messages = IStatusMessage(self.request)
                 for error in self.errors:
                     messages.addStatusMessage(error, type='error')
+            pdf_id = self.context.invokeFactory('File', id='issue.pdf', title='issue.pdf')
+            obj = self.context[pdf_id]
+            obj.update_data(self.request.form['pdf'])
+            request = makerequest.makerequest(obj)
+            event = ObjectInitializedEvent(obj, request)
+            notify(event)
             self.import_successful = True
         elif req_has_key('zip'):
             try:
