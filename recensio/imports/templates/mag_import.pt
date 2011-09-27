@@ -10,7 +10,8 @@
 <metal:content-core fill-slot="content-core">
     <div id="mag-upload">
         <h1 i18n:translate="upload_translations_view">Dieser View dient dem Upload von Rezensionen</h1>
-        <div i18n:translate="msg_excel_or_zip_upload">Entweder, sie laden hier eine Excel und eine ZIP Datei hoch, oder sie laden eine ZIP Datei hoch, welche genau eine Excel Datei und beliebig viele Word Dateien enthält
+        <div i18n:translate="msg_excel_or_zip_upload">Entweder, sie laden hier eine Excel und eine PDF Datei hoch, oder sie laden eine ZIP Datei hoch, welche genau eine Excel Datei und beliebig viele Word Dateien enthält.
+        Im Falle der Excel und PDF Variante, werden die Seiten entsprechend den Informationen aus der Excel Datei aus dem PDF herausgeschnitten.
         </div>
         <form name="mag_upload" method="POST" enctype="multipart/form-data"
             tal:condition="not: view/import_successful">
