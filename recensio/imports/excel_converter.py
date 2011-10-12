@@ -228,7 +228,7 @@ class ExcelConverter(object):
                 columns.append({'columns' : column, \
                                     'css_class' : css_class})
             self.header_error = columns
-            raise Exception(_(u'Die Excel Datei enthält Daten, '
+            raise Exception(_(u'Die Excel Datei enthaelt Daten, '
                               'die das Programm nicht versteht'))
         
 
