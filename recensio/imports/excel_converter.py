@@ -191,6 +191,7 @@ class ExcelConverter(object):
         return self.convert(xls_file, self.reference_header_xls)
 
     def convert(self, xls_file, reference_header):
+        retval = []
         try:
             xls_data = XlsReader(xls_file).read().data
         except TypeError:
@@ -261,7 +262,8 @@ class ExcelConverter(object):
             data['languageReviewedText'] =\
                 self.convertLanguages(data['languageReviewedText'])
             data = convertToString(data)
-            yield data
+            retval.append(data)
+        return retval
 
     def convertLanguages(self, data):
         data = data.replace(';', ' ').replace('.', ' ')\
@@ -287,4 +289,3 @@ class ExcelConverter(object):
             vocab = util(self)
             self._supported_languages = vocab.by_token.keys()
         return self._supported_languages
-

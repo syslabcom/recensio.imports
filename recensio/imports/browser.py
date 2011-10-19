@@ -123,13 +123,14 @@ class MagazineImport(object):
                 messages = IStatusMessage(self.request)
                 for error in self.errors:
                     messages.addStatusMessage(error, type='error')
-            pdf_id = self.context.invokeFactory('File', id='issue.pdf', title='issue.pdf')
-            obj = self.context[pdf_id]
-            obj.update_data(self.request.form['pdf'])
-            request = makerequest.makerequest(obj)
-            event = ObjectInitializedEvent(obj, request)
-            notify(event)
-            self.import_successful = True
+            else:
+                pdf_id = self.context.invokeFactory('File', id='issue.pdf', title='issue.pdf')
+                obj = self.context[pdf_id]
+                obj.update_data(self.request.form['pdf'])
+                request = makerequest.makerequest(obj)
+                event = ObjectInitializedEvent(obj, request)
+                notify(event)
+                self.import_successful = True
         elif req_has_key('zip'):
             try:
                 self.addZIPContent(self.request.form['zip'])
@@ -137,7 +138,8 @@ class MagazineImport(object):
                 messages = IStatusMessage(self.request)
                 for error in self.errors:
                     messages.addStatusMessage(error, type='error')
-            self.import_successful = True
+            else:
+                self.import_successful = True
         return self.template(self)
 
     def addPDFContent(self, xls, pdf):
