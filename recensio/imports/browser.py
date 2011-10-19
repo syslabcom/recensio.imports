@@ -144,6 +144,8 @@ class MagazineImport(object):
         try:
             results = self.excel_converter.convert_xls(xls)
         except Exception, e:
+            if hasattr(self.excel_converter, 'header_error'):
+                self.header_error = self.excel_converter.header_error
             log.exception(str(e))
             self.errors.append(str(e))
             transaction.doom()
