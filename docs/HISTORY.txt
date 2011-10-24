@@ -4,7 +4,9 @@ Changelog
 2.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+Second beta release for phase 2
+
+- Readding error handling
 
 
 2.0b1 (2011-10-13)
