@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.0 (unreleased)
-----------------
+2.0b2 (2011-10-24)
+------------------
 
 Second beta release for phase 2
 
