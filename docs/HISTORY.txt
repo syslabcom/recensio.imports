@@ -1,10 +1,10 @@
 Changelog
 =========
 
-2.0 (unreleased)
+2.0 (2011-11-08)
 ----------------
 
-- Nothing changed yet.
+- No changes
 
 
 2.0b2 (2011-10-24)
