@@ -1,7 +1,12 @@
 Changelog
 =========
 
-2.2 (unreleased)
+2.3 (2011-12-05)
+----------------
+
+- Adjusting package to work with fullrelease
+
+2.2 (2011-12-05)
 ----------------
 
 - Fixing package
