@@ -1,11 +1,18 @@
 Changelog
 =========
 
-2.1 (unreleased)
+2.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fixing package
 
+
+2.1 (2011-12-05)
+----------------
+
+- The fields for "Page numbers of the review" are
+  pageStart/EndOfReviewInJournal adjusting the converter to use these
+  fields to fix the import #3974
 
 2.0 (2011-11-08)
 ----------------
