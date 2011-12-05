@@ -1,0 +1,9 @@
+Changelog
+=========
+
+2.1 (unreleased)
+----------------
+
+- The fields for "Page numbers of the review" are
+  pageStart/EndOfReviewInJournal adjusting the converter to use these
+  fields to fix the import #3974

@@ -156,13 +156,16 @@ class MagazineImport(object):
             self.warnings = self.excel_converter.warnings
         pdf_name = pdf.filename
         for result in results:
-            start, end = [int(result.pop('pdfPage' + x) or 0) for x in 'Start', 'End']
+            start, end = [
+                int(result.pop('pdfPage' + x) or 0)
+                for x in 'Start', 'End']
             module, class_ = result.pop('portal_type')
             portal_type = self.type_getter(module, class_)
             result['pdf'] = cutPDF(pdf, start, end)
             result_item = addOneItem(self.context, portal_type, result)
-            self.results.append({'name' : result_item.title, \
-                                 'url' : result_item.absolute_url()})
+            self.results.append(
+                {'name' : result_item.title,
+                 'url' : result_item.absolute_url()})
         if self.errors:
             raise FrontendException()
 
@@ -178,7 +181,9 @@ class MagazineImport(object):
         finally:
             self.warnings = self.excel_converter.warnings
         if len(docs) != len(results):
-            self.errors.append(_("The number of documents in the zip file do not match the number of entries in the excel file"))
+            self.errors.append(
+                _("The number of documents in the zip file do not match "
+                  "the number of entries in the excel file"))
             transaction.doom()
             raise FrontendException()
         for result, doc in zip(results, docs):

@@ -71,8 +71,8 @@ class ExcelConverter(object):
            ,'rez. vorname' : 'firstname_review_authors_1'
            ,'rez. nachname' : 'lastname_review_authors_1'
            ,'titel werk' : 'title'
-           ,'print seite start' : 'pageStart'
-           ,'print seite ende' : 'pageEnd'
+           ,'print seite start' : 'pageStartOfReviewInJournal'
+           ,'print seite ende' : 'pageEndOfReviewInJournal'
            ,'filename' : 'filename'
            ,'pdf start' : 'pdfPageStart'
            ,'pdf ende' : 'pdfPageEnd'
@@ -91,8 +91,8 @@ class ExcelConverter(object):
            ,'rez. vorname' : 'firstname_review_authors_1'
            ,'rez. nachname' : 'lastname_review_authors_1'
            ,'titel werk' : 'title'
-           ,'print seite start' : 'pageStart'
-           ,'print seite ende' : 'pageEnd'
+           ,'print seite start' : 'pageStartOfReviewInJournal'
+           ,'print seite ende' : 'pageEndOfReviewInJournal'
            ,'filename' : 'filename'
            ,'pdf start' : 'pdfPageStart'
            ,'pdf ende' : 'pdfPageEnd'
@@ -198,11 +198,14 @@ class ExcelConverter(object):
             raise TypeError(_(u'Excel Datei konnte nicht gelesen werden, '
                               'evtl. mit PDF vertauscht?'))
         except xlrd.XLRDError, e:
-            raise Exception(_(u"help_import_error_unsupported_xls",
-                              u"Please ensure that the xls file you selected is a valid "
-                              "Excel file"))
+            raise Exception(
+                _(u"help_import_error_unsupported_xls",
+                  (u"Please ensure that the xls file you selected is a valid "
+                   u"Excel file")))
 
-        keys = [self.translate_headers.get(x.strip().lower(), x.strip().lower()) for x in xls_data[4]]
+        keys = [
+            self.translate_headers.get(x.strip().lower(), x.strip().lower())
+            for x in xls_data[4]]
         if keys != reference_header:
             columns = []
             for i in range(max(len(keys), len(reference_header))):
@@ -231,7 +234,7 @@ class ExcelConverter(object):
             self.header_error = columns
             raise Exception(_(u'Die Excel Datei enthaelt Daten, '
                               'die das Programm nicht versteht'))
-        
+
 
         for count, row in enumerate(xls_data[6:]):
             if len([x for x in row[1:15] if x]) <= 1:
@@ -255,8 +258,10 @@ class ExcelConverter(object):
                         data[mapping[key]] = row[index]
             data['reviewAuthors'] = 'firstname:%(firstname_review_authors_1)s,'\
                 'lastname:%(lastname_review_authors_1)s' % data
-            data['pageStart'], data['pageEnd'] = map(int, [data['pageStart'] or 0,
-                                                           data['pageEnd'] or 0])
+            (data['pageStartOfReviewInJournal'],
+             data['pageEndOfReviewInJournal']) = map(
+                int, [data['pageStartOfReviewInJournal'] or 0,
+                      data['pageEndOfReviewInJournal'] or 0])
             data['languageReview'] =\
                 self.convertLanguages(data['languageReview'])
             data['languageReviewedText'] =\
