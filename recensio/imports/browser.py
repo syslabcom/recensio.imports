@@ -166,6 +166,7 @@ class MagazineImport(object):
             self.results.append(
                 {'name' : result_item.title,
                  'url' : result_item.absolute_url()})
+            transaction.commit()
         if self.errors:
             raise FrontendException()
 
