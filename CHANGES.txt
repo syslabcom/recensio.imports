@@ -4,7 +4,8 @@ Changelog
 2.5 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Explicitly not handle Conflict Errors.
+  [gerken]
 
 
 2.4 (2011-12-05)
