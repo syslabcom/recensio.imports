@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5 (unreleased)
+2.5 (2012-06-19)
 ----------------
 
 - Explicitly not handle Conflict Errors.
