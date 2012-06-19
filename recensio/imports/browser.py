@@ -15,6 +15,7 @@ from plone.registry.interfaces import IRegistry
 from Products.Archetypes.event import ObjectInitializedEvent
 from Testing import makerequest
 from zope.event import notify
+from ZODB.POSException import ConflictError
 
 from recensio.contenttypes.setuphandlers import addOneItem
 from recensio.policy import recensioMessageFactory as _
@@ -146,6 +147,8 @@ class MagazineImport(object):
         try:
             results = self.excel_converter.convert_xls(xls)
         except Exception, e:
+            if isinstance(e, ConflictError):
+                raise
             if hasattr(self.excel_converter, 'header_error'):
                 self.header_error = self.excel_converter.header_error
             log.exception(str(e))
@@ -175,6 +178,8 @@ class MagazineImport(object):
             xls, docs = self.zip_extractor(zipfile)
             results = [x for x in self.excel_converter.convert_zip(xls)]
         except Exception, e:
+            if isinstance(e, ConflictError):
+                raise
             log.exception(str(e))
             self.errors.append(str(e))
             transaction.doom()
