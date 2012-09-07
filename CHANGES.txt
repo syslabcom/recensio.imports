@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.6 (unreleased)
+2.6 (2012-09-07)
 ----------------
 
 - Really, no changes, just changed git repo.
