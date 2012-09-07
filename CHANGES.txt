@@ -4,7 +4,8 @@ Changelog
 2.6 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Really, no changes, just changed git repo.
+  [gerken]
 
 
 2.5 (2012-06-19)
