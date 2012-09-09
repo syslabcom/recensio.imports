@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.6.0.1'
+version = '2.6.1.dev0'
 
 setup(name='recensio.imports',
       version=version,
