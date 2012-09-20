@@ -10,6 +10,7 @@
 
   <adapter factory=".adapters.RecensioImportData" />
 
+  <include package="Products.CMFCore" />
   <browser:page
     for="Products.CMFCore.interfaces.ISiteRoot"
     name="xmlrpc_import"
@@ -39,5 +40,5 @@
     class=".browser.RecensioImportConfigurationControlPanel"
     permission="cmf.ManagePortal"
     />
-  
+
 </configure>
