@@ -256,8 +256,10 @@ class ExcelConverter(object):
                             data[mapping[key]] = unicode(row[index])
                     else:
                         data[mapping[key]] = row[index]
-            data['reviewAuthors'] = 'firstname:%(firstname_review_authors_1)s,'\
-                'lastname:%(lastname_review_authors_1)s' % data
+            data['reviewAuthors'] = '[{"firstname":"%(firstname_review_authors_1)s",'\
+                    '"lastname":"%(lastname_review_authors_1)s"}]' % data
+            #data['reviewAuthors'] = 'firstname:%(firstname_review_authors_1)s,'\
+            #    'lastname:%(lastname_review_authors_1)s' % data
             (data['pageStartOfReviewInJournal'],
              data['pageEndOfReviewInJournal']) = map(
                 int, [data['pageStartOfReviewInJournal'] or 0,
