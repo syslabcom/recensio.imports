@@ -22,7 +22,7 @@ from recensio.policy import recensioMessageFactory as _
 
 from recensio.imports.interfaces import IRecensioImport, \
     IRecensioImportConfiguration
-from recensio.imports.excel_converter import ExcelConverter
+from recensio.imports.excel_converter import ExcelConverter, ExcelURNExtractor
 from recensio.imports.pdf_cut import cutPDF
 from recensio.imports.zip_extractor import ZipExtractor
 from plone.app.blob.content import ATBlob
@@ -32,6 +32,7 @@ log = getLogger('recensio.imports.browser')
 
 def viewPage(br):
     file('/tmp/bla.html', 'w').write(str(br.contents))
+
 
 class Import(BrowserView):
     """
@@ -100,6 +101,21 @@ class RecensioImportConfigurationControlPanel(\
 
 class FrontendException(Exception):
     pass
+
+
+class URNImport(object):
+    template = ViewPageTempalte('templates/urn_import.pt')
+    errors = []
+
+    def __call__(self):
+        if self.request.form.has_key('xls'):
+            self.handleXLSImport(self.request.form['xls'])
+        return self.template(self)
+
+    def handleXLSImport(xls_document):
+        self.import_successful = True
+        pass
+
 
 class MagazineImport(object):
     template = ViewPageTemplateFile('templates/mag_import.pt')

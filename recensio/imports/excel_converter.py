@@ -8,6 +8,46 @@ import xlrd
 from recensio.policy import recensioMessageFactory as _
 from recensio.policy.tools import convertToString
 
+
+class ExcelURNExtractor(object):
+    """
+    Convert a given excel file to a dictionary of UUID->URN
+    """
+    REFERENCE_HEADER = ["recensio-id", "urn"]
+
+    def __call__(self, xls_file):
+        retval = []
+        try:
+            xls_data = XlsReader(xls_file).read().data
+        except TypeError:
+            raise TypeError(_(u'Excel Datei konnte nicht gelesen werden'))
+        except xlrd.XLRDError:
+            raise Exception(
+                _(u"help_import_error_unsupported_xls",
+                  (u"Please ensure that the xls file you selected is a valid "
+                   u"Excel file")))
+        header = xls_data[0]
+        errors = []
+        for i in range(max(len(header), len(self.REFERENCE_HEADER))):
+            if len(header) < i - 1:
+                errors.append("Das Excel Dokument enthält zu wenige Spalten. Folgende Spalten sind das Minimum: %s" %
+                    (" ".join(self.REFERENCE_HEADER)))
+                break
+            if len(self.REFERENCE_HEADER) < i - 1:
+                errors.append("Das Excel Dokument enthält zu viele Spalten. Es dürfen nur folgende Spalten vorkommen: %s" %
+                    (" ".join(self.REFERENCE_HEADER)))
+                break
+            if header[0].lower().strip() != self.REFERENCE_HEADER[0]:
+                errors.append("Spalte %i ist falsch. Ist: %s, Soll: %s (Gross und Kleinschreibung wird ignoriert" %
+                    (i + 1, header[0].strip(), self.REFERENCE_HEADER[i]))
+        if errors:
+            raise TypeError("Do not understand Excel File", errors=errors)
+
+        retval = {}
+        for count, row in enumerate(xls_data[1:]):
+            retval[xls_data[0]] = xls_data[1]
+        return retval
+
 class ExcelConverter(object):
     """
     Convert a given excel file to a list of content types and their initial data
