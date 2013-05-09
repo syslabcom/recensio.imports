@@ -1,31 +1,31 @@
 # -*- coding: utf-8 -*-
+from logging import getLogger
 from sha import sha
 import xmlrpclib
 
+from Testing import makerequest
 from zc.testbrowser.browser import Browser
+from ZODB.POSException import ConflictError
 from zope.component import getUtility
+from zope.event import notify
 import transaction
-from logging import getLogger
 
+from plone.app.async.interfaces import IAsyncService
+from plone.app.registry.browser import controlpanel
+from plone.app.uuid.utils import uuidToObject
+from plone.registry.interfaces import IRegistry
+from Products.Archetypes.event import ObjectInitializedEvent
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
-from plone.app.registry.browser import controlpanel
-from plone.registry.interfaces import IRegistry
-from Products.Archetypes.event import ObjectInitializedEvent
-from Testing import makerequest
-from zope.event import notify
-from ZODB.POSException import ConflictError
 
 from recensio.contenttypes.setuphandlers import addOneItem
-from recensio.policy import recensioMessageFactory as _
-
-from recensio.imports.interfaces import IRecensioImport, \
-    IRecensioImportConfiguration
 from recensio.imports.excel_converter import ExcelConverter, ExcelURNExtractor
+from recensio.imports.interfaces import IRecensioImport
+from recensio.imports.interfaces import IRecensioImportConfiguration
 from recensio.imports.pdf_cut import cutPDF
 from recensio.imports.zip_extractor import ZipExtractor
-from plone.app.blob.content import ATBlob
+from recensio.policy import recensioMessageFactory as _
 
 log = getLogger('recensio.imports.browser')
 
@@ -103,18 +103,34 @@ class FrontendException(Exception):
     pass
 
 
+def batch_import(context, batch):
+    for (uuid, urn) in batch:
+        document = uuidToObject(uuid)
+        document.setUrn(urn)
+
+
 class URNImport(object):
-    template = ViewPageTempalte('templates/urn_import.pt')
-    errors = []
+    template = ViewPageTemplateFile('templates/urn_import.pt')
+    BATCH_SIZE = 1000
+
+    def __init__(self, *args, **kwargs):
+        self.errors = []
+        super(URNImport, self).__init__(*args, **kwargs)
 
     def __call__(self):
-        if self.request.form.has_key('xls'):
+        if 'xls' in self.request.form:
             self.handleXLSImport(self.request.form['xls'])
         return self.template(self)
 
-    def handleXLSImport(xls_document):
+    def handleXLSImport(self, xls_document):
         self.import_successful = True
-        pass
+        data = ExcelURNExtractor()(xls_document)
+        async = getUtility(IAsyncService)
+        for index in range(0, len(data), self.BATCH_SIZE):
+            batch_import(self.cotnext, data[index:index + self.BATCH_SIZE])
+            async.queueJob(batch_import,
+                self.context,
+                data[index:index + self.BATCH_SIZE])
 
 
 class MagazineImport(object):
