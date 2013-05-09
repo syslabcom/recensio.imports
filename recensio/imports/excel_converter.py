@@ -43,9 +43,9 @@ class ExcelURNExtractor(object):
         if errors:
             raise TypeError("Do not understand Excel File", errors=errors)
 
-        retval = {}
+        retval = []
         for count, row in enumerate(xls_data[1:]):
-            retval[xls_data[0]] = xls_data[1]
+            retval.append(row)
         return retval
 
 class ExcelConverter(object):

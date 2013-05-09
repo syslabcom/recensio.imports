@@ -12,7 +12,7 @@ import transaction
 
 from plone.app.async.interfaces import IAsyncService
 from plone.app.registry.browser import controlpanel
-from plone.app.uuid.utils import uuidToObject
+from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.registry.interfaces import IRegistry
 from Products.Archetypes.event import ObjectInitializedEvent
 from Products.Five.browser import BrowserView
@@ -105,7 +105,8 @@ class FrontendException(Exception):
 
 def batch_import(context, batch):
     for (uuid, urn) in batch:
-        document = uuidToObject(uuid)
+        brain = uuidToCatalogBrain(uuid)
+        document = context.restrictedTraverse(brain['path_string'])
         document.setUrn(urn)
 
 
@@ -114,6 +115,7 @@ class URNImport(object):
     BATCH_SIZE = 1000
 
     def __init__(self, *args, **kwargs):
+        self.import_successful = False
         self.errors = []
         super(URNImport, self).__init__(*args, **kwargs)
 
@@ -127,7 +129,7 @@ class URNImport(object):
         data = ExcelURNExtractor()(xls_document)
         async = getUtility(IAsyncService)
         for index in range(0, len(data), self.BATCH_SIZE):
-            batch_import(self.cotnext, data[index:index + self.BATCH_SIZE])
+            batch_import(self.context, data[index:index + self.BATCH_SIZE])
             async.queueJob(batch_import,
                 self.context,
                 data[index:index + self.BATCH_SIZE])

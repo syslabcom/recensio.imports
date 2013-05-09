@@ -29,7 +29,7 @@
   <browser:page
     for="OFS.interfaces.IFolder"
     name="urn_import"
-    class=".browser.urn_import"
+    class=".browser.URNImport"
     layer="recensio.theme.interfaces.IRecensioLayer"
     permission="zope2.View"
     />
