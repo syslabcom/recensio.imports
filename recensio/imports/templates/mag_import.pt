@@ -13,6 +13,10 @@
         <div i18n:translate="msg_excel_or_zip_upload">Entweder, Sie laden hier eine Excel und eine PDF Datei hoch, oder sie laden eine ZIP Datei hoch, welche genau eine Excel Datei und beliebig viele Word Dateien enthält.
         Im Falle der Excel und PDF Variante, werden die Seiten entsprechend den Informationen aus der Excel Datei aus dem PDF herausgeschnitten.
         </div>
+        <div><span i18n:translate="msg_excel_upload_templates">Vorlagen für die Excel-Datei können Sie hier herunterladen:</span><br/>
+            <a href ="++theme++recensio.imports/recensioupload_DE.xls">recensioupload_DE.xls (Deutsch)</a><br/>
+            <a href ="++theme++recensio.imports/recensioupload_EN.xls">recensioupload_EN.xls (English)</a>
+        </div>
         <form name="mag_upload" method="POST" enctype="multipart/form-data"
             tal:condition="not: view/import_successful">
             <p>

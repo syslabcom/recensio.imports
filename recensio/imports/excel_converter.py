@@ -76,7 +76,7 @@ class ExcelConverter(object):
        ,'language rev.' : 'rez.sprache'
        ,'textsprache' : 'textsprache'
        ,'language text' : 'textsprache'
-       ,'partner url' : 'partner url'
+       ,'original url' : 'original url'
        ,'optionales zitierschema' : 'optionales zitierschema'
        ,'optional custom citation format' : 'optionales zitierschema'
     }
@@ -91,14 +91,14 @@ class ExcelConverter(object):
                             u'rez. nachname', u'titel werk', u'print seite start',
                             u'print seite ende', u'filename',
                             u'typ', u'rez.sprache',
-                            u'textsprache', u'partner url',
+                            u'textsprache', u'original url',
                             u'optionales zitierschema', '', '', u'review journal',
                             u'rj']
     reference_header_xls = ['', u'isbn/issn', u'jahr', u'rez. vorname',
                             u'rez. nachname', u'titel werk', u'print seite start',
                             u'print seite ende', u'pdf start', u'pdf ende',
                             u'typ', u'rez.sprache',
-                            u'textsprache', u'partner url',
+                            u'textsprache', u'original url',
                             u'optionales zitierschema', '', u'review journal',
                             u'rj']
 
@@ -121,7 +121,7 @@ class ExcelConverter(object):
            ,'rez.sprache' : 'languageReview'
            ,'textsprache' : 'languageReviewedText'
            ,'rj' : 'ignore'
-           ,'partner url' : 'canonical_uri'
+           ,'original url' : 'canonical_uri'
            ,'optionales zitierschema' : 'customCitation'}
         ,'rj' : {
             'portal_type' : ('recensio.contenttypes.content.reviewjournal',
@@ -141,7 +141,7 @@ class ExcelConverter(object):
            ,'rj' : 'ignore'
            ,'rez.sprache' : 'languageReview'
            ,'textsprache' : 'languageReviewedText'
-           ,'partner url' : 'canonical_uri'
+           ,'original url' : 'canonical_uri'
            ,'optionales zitierschema' : 'customCitation'}
         ,'pm' : {
             'portal_type' : ('recensio.contenttypes.content'
@@ -159,7 +159,7 @@ class ExcelConverter(object):
            ,'typ' : 'ignore'
            ,'review journal' : 'ignore'
            ,'rj' : 'ignore'
-           ,'partner url' : 'ignore'
+           ,'original url' : 'ignore'
            ,'optionales zitierschema' : 'customCitation'}
         ,'pace' : {
             'portal_type' : ('recensio.contenttypes.content.presentation'
@@ -177,7 +177,7 @@ class ExcelConverter(object):
            ,'review journal' : 'ignore'
            ,'rj' : 'ignore'
            ,'typ' : 'ignore'
-           ,'partner url' : 'ignore'
+           ,'original url' : 'ignore'
            ,'optionales zitierschema' : 'customCitation'}
         ,'paj' : {
             'portal_type' : ('recensio.contenttypes.content.presentation'
@@ -193,7 +193,7 @@ class ExcelConverter(object):
            ,'pdf start' : 'pdfPageStart'
            ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
-           ,'partner url' : 'ignore'
+           ,'original url' : 'ignore'
            ,'review journal' : 'ignore'
            ,'rj' : 'ignore'
            ,'typ' : 'ignore'
@@ -213,7 +213,7 @@ class ExcelConverter(object):
            ,'pdf start' : 'pdfPageStart'
            ,'pdf ende' : 'pdfPageEnd'
            ,'typ' : 'ignore'
-           ,'partner url' : 'ignore'
+           ,'original url' : 'ignore'
            ,'review journal' : 'ignore'
            ,'rj' : 'ignore'
            ,'typ' : 'ignore'
