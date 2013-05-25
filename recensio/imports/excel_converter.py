@@ -121,7 +121,7 @@ class ExcelConverter(object):
            ,'rez.sprache' : 'languageReview'
            ,'textsprache' : 'languageReviewedText'
            ,'rj' : 'ignore'
-           ,'partner url' : 'uri'
+           ,'partner url' : 'canonical_uri'
            ,'optionales zitierschema' : 'customCitation'}
         ,'rj' : {
             'portal_type' : ('recensio.contenttypes.content.reviewjournal',
@@ -141,7 +141,7 @@ class ExcelConverter(object):
            ,'rj' : 'ignore'
            ,'rez.sprache' : 'languageReview'
            ,'textsprache' : 'languageReviewedText'
-           ,'partner url' : 'uri'
+           ,'partner url' : 'canonical_uri'
            ,'optionales zitierschema' : 'customCitation'}
         ,'pm' : {
             'portal_type' : ('recensio.contenttypes.content'
