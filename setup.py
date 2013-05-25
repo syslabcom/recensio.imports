@@ -28,6 +28,7 @@ setup(name='recensio.imports',
           'Products.CMFPlone',
           'zc.testbrowser',
           'pyPdf',
+          'plone.resource',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

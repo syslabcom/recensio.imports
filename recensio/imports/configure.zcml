@@ -4,6 +4,7 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="recensio">
 
   <five:registerPackage package="." initialize=".initialize" />
@@ -11,6 +12,8 @@
   <adapter factory=".adapters.RecensioImportData" />
 
   <include package="Products.CMFCore" />
+  <include package="plone.resource" file="meta.zcml"/>
+
   <browser:page
     for="Products.CMFCore.interfaces.ISiteRoot"
     name="xmlrpc_import"
@@ -47,6 +50,12 @@
     for="Products.CMFPlone.interfaces.IPloneSiteRoot"
     class=".browser.RecensioImportConfigurationControlPanel"
     permission="cmf.ManagePortal"
+    />
+
+  <plone:static
+    directory="resource"
+    type="theme"
+    name="recensio.imports"
     />
 
 </configure>
