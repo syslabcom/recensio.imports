@@ -4,7 +4,11 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- fixed language dropdowns in import templates, refs #7638 [reinhardt]
+- changed column "Partner URL" to "Original URL" in xls upload, refs #7513
+  [reinhardt]
+- serve xls import templates as static resources, refs #7513 [reinhardt]
+- corrected field name for 'partner url', refs #7513 [reinhardt]
 
 
 3.0.1 (2013-05-14)
