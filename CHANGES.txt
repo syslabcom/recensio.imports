@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.2 (unreleased)
+3.0.2 (2013-07-07)
 ------------------
 
 - fixed language dropdowns in import templates, refs #7638 [reinhardt]
