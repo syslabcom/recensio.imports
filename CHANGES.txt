@@ -4,7 +4,8 @@ Changelog
 3.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- #8321 Replace the bulk upload spreadsheets with new ones, to work
+  around an issue we can't reproduce. [deroiste]
 
 
 3.0.4 (2013-12-16)
