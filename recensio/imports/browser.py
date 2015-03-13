@@ -161,6 +161,7 @@ class MagazineImport(object):
             else:
                 pdf_id = self.context.invokeFactory('File', id='issue.pdf', title='issue.pdf')
                 obj = self.context[pdf_id]
+                obj.setLanguage('')
                 obj.update_data(self.request.form['pdf'])
                 request = makerequest.makerequest(obj)
                 event = ObjectInitializedEvent(obj, request)
