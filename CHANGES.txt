@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.6 (unreleased)
+3.0.6 (2015-04-07)
 ------------------
 
 - let issue.pdf files be language neutral, refs #7897 [reinhardt]
