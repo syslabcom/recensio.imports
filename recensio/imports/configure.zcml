@@ -58,4 +58,14 @@
     name="recensio.imports"
     />
 
+  <genericsetup:upgradeStep
+    sortkey="1"
+    source="*"
+    destination="3.0.6"
+    title="Make issue.pdf language neutral"
+    description=""
+    profile='recensio.imports:default'
+    handler=".upgrades.issue_language"
+    />
+
 </configure>
