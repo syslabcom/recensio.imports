@@ -79,6 +79,7 @@ class ExcelConverter(object):
        ,'original url' : 'original url'
        ,'optionales zitierschema' : 'optionales zitierschema'
        ,'optional custom citation format' : 'optionales zitierschema'
+       ,'doi': 'doi'
     }
 
     ignored_fields = ['typ', '']
@@ -92,14 +93,14 @@ class ExcelConverter(object):
                             u'print seite ende', u'filename',
                             u'typ', u'rez.sprache',
                             u'textsprache', u'original url',
-                            u'optionales zitierschema', '', '', u'review journal',
+                            u'optionales zitierschema', 'doi', '', '', u'review journal',
                             u'rj']
     reference_header_xls = ['', u'isbn/issn', u'jahr', u'rez. vorname',
                             u'rez. nachname', u'titel werk', u'print seite start',
                             u'print seite ende', u'pdf start', u'pdf ende',
                             u'typ', u'rez.sprache',
                             u'textsprache', u'original url',
-                            u'optionales zitierschema', '', u'review journal',
+                            u'optionales zitierschema', 'doi', '', u'review journal',
                             u'rj']
 
     portal_type_mappings =  {
@@ -122,7 +123,8 @@ class ExcelConverter(object):
            ,'textsprache' : 'languageReviewedText'
            ,'rj' : 'ignore'
            ,'original url' : 'canonical_uri'
-           ,'optionales zitierschema' : 'customCitation'}
+           ,'optionales zitierschema' : 'customCitation'
+           ,'doi': 'doi'}
         ,'rj' : {
             'portal_type' : ('recensio.contenttypes.content.reviewjournal',
                              'ReviewJournal')
@@ -142,7 +144,8 @@ class ExcelConverter(object):
            ,'rez.sprache' : 'languageReview'
            ,'textsprache' : 'languageReviewedText'
            ,'original url' : 'canonical_uri'
-           ,'optionales zitierschema' : 'customCitation'}
+           ,'optionales zitierschema' : 'customCitation'
+           ,'doi': 'doi'}
         ,'pm' : {
             'portal_type' : ('recensio.contenttypes.content'
                              '.presentationmonograph', 'PresentationMonograph')
