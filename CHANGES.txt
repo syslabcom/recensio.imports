@@ -4,7 +4,7 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- added DOI field to import, refs #12128 [reinhardt]
 
 
 3.0.6 (2015-04-07)
