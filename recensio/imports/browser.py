@@ -159,13 +159,15 @@ class MagazineImport(object):
                 for error in self.errors:
                     messages.addStatusMessage(error, type='error')
             else:
-                pdf_id = self.context.invokeFactory('File', id='issue.pdf', title='issue.pdf')
-                obj = self.context[pdf_id]
-                obj.setLanguage('')
-                obj.update_data(self.request.form['pdf'])
-                request = makerequest.makerequest(obj)
-                event = ObjectInitializedEvent(obj, request)
-                notify(event)
+                # XXX Causes "BlobError: Uncommitted changes" when the indexing
+                # queue is processed
+                #pdf_id = self.context.invokeFactory('File', id='issue.pdf', title='issue.pdf')
+                #obj = self.context[pdf_id]
+                #obj.setLanguage('')
+                #obj.update_data(self.request.form['pdf'])
+                #request = makerequest.makerequest(obj)
+                #event = ObjectInitializedEvent(obj, request)
+                #notify(event)
                 self.import_successful = True
         elif req_has_key('zip'):
             try:

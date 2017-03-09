@@ -4,7 +4,8 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Commented out issue.pdf code to work around "BlobError: Uncommitted changes".
+  Refs #15018 [reinhardt]
 
 
 3.0.7 (2016-04-25)
