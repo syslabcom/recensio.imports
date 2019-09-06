@@ -146,6 +146,69 @@ class ExcelConverter(object):
            ,'original url' : 'canonical_uri'
            ,'optionales zitierschema' : 'customCitation'
            ,'doi': 'doi'}
+        ,'raj' : {
+            'portal_type' : ('recensio.contenttypes.content.reviewarticlejournal',
+                             'ReviewArticleJournal')
+           ,'isbn/issn' : 'issn'
+           ,'jahr' : 'yearOfPublication'
+           ,'rez. vorname' : 'firstname_review_authors_1'
+           ,'rez. nachname' : 'lastname_review_authors_1'
+           ,'titel werk' : 'title'
+           ,'print seite start' : 'pageStartOfReviewInJournal'
+           ,'print seite ende' : 'pageEndOfReviewInJournal'
+           ,'filename' : 'filename'
+           ,'pdf start' : 'pdfPageStart'
+           ,'pdf ende' : 'pdfPageEnd'
+           ,'typ' : 'ignore'
+           ,'review journal' : 'ignore'
+           ,'rj' : 'ignore'
+           ,'rez.sprache' : 'languageReview'
+           ,'textsprache' : 'languageReviewedText'
+           ,'original url' : 'canonical_uri'
+           ,'optionales zitierschema' : 'customCitation'
+           ,'doi': 'doi'}
+        ,'raev' : {
+            'portal_type' : ('recensio.contenttypes.content.reviewarticlecollection',
+                             'ReviewArticleCollection')
+           ,'isbn/issn' : 'issn'
+           ,'jahr' : 'yearOfPublication'
+           ,'rez. vorname' : 'firstname_review_authors_1'
+           ,'rez. nachname' : 'lastname_review_authors_1'
+           ,'titel werk' : 'title'
+           ,'print seite start' : 'pageStartOfReviewInJournal'
+           ,'print seite ende' : 'pageEndOfReviewInJournal'
+           ,'filename' : 'filename'
+           ,'pdf start' : 'pdfPageStart'
+           ,'pdf ende' : 'pdfPageEnd'
+           ,'typ' : 'ignore'
+           ,'review journal' : 'ignore'
+           ,'rj' : 'ignore'
+           ,'rez.sprache' : 'languageReview'
+           ,'textsprache' : 'languageReviewedText'
+           ,'original url' : 'canonical_uri'
+           ,'optionales zitierschema' : 'customCitation'
+           ,'doi': 'doi'}
+        ,'re' : {
+            'portal_type' : ('recensio.contenttypes.content.reviewexhibition',
+                             'ReviewExhibition')
+           ,'isbn/issn' : 'ignore'
+           ,'jahr' : 'yearOfPublication'
+           ,'rez. vorname' : 'firstname_review_authors_1'
+           ,'rez. nachname' : 'lastname_review_authors_1'
+           ,'titel werk' : 'title'
+           ,'print seite start' : 'pageStartOfReviewInJournal'
+           ,'print seite ende' : 'pageEndOfReviewInJournal'
+           ,'filename' : 'filename'
+           ,'pdf start' : 'pdfPageStart'
+           ,'pdf ende' : 'pdfPageEnd'
+           ,'typ' : 'ignore'
+           ,'review journal' : 'ignore'
+           ,'rj' : 'ignore'
+           ,'rez.sprache' : 'languageReview'
+           ,'textsprache' : 'ignore'
+           ,'original url' : 'canonical_uri'
+           ,'optionales zitierschema' : 'customCitation'
+           ,'doi': 'doi'}
         ,'pm' : {
             'portal_type' : ('recensio.contenttypes.content'
                              '.presentationmonograph', 'PresentationMonograph')
@@ -309,8 +372,9 @@ class ExcelConverter(object):
                       data['pageEndOfReviewInJournal'] or 0])
             data['languageReview'] =\
                 self.convertLanguages(data['languageReview'])
-            data['languageReviewedText'] =\
-                self.convertLanguages(data['languageReviewedText'])
+            if data.get('languageReviewedText'):
+                data['languageReviewedText'] =\
+                    self.convertLanguages(data['languageReviewedText'])
             data = convertToString(data)
             retval.append(data)
         return retval
