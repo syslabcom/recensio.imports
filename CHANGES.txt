@@ -4,7 +4,7 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Support for new content types in bulk upload. #FLOW-649
 
 
 3.0.7 (2016-04-25)
