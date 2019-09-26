@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.8 (unreleased)
+3.1.0 (2019-09-26)
 ------------------
 
 - Support for new content types in bulk upload. #FLOW-649
