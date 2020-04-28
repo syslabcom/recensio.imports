@@ -5,7 +5,8 @@ from Products.CMFCore.interfaces import ISiteRoot
 
 from recensio.imports.interfaces import IRecensioImport
 
-RECENSIO_IMPORTS = 'recensio.imports'
+RECENSIO_IMPORTS = "recensio.imports"
+
 
 class RecensioImportData(object):
     implements(IRecensioImport)
@@ -22,7 +23,7 @@ class RecensioImportData(object):
 
     @property
     def existing_paths(self):
-        if not hasattr(self, '_paths'):
+        if not hasattr(self, "_paths"):
             annotations = IAnnotations(self.context)
             self._paths = annotations.get(RECENSIO_IMPORTS, [])
         return self._paths

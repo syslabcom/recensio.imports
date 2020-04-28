@@ -27,11 +27,11 @@ from recensio.imports.pdf_cut import cutPDF
 from recensio.imports.zip_extractor import ZipExtractor
 from recensio.policy import recensioMessageFactory as _
 
-log = getLogger('recensio.imports.browser')
+log = getLogger("recensio.imports.browser")
 
 
 def viewPage(br):
-    file('/tmp/bla.html', 'w').write(str(br.contents))
+    file("/tmp/bla.html", "w").write(str(br.contents))
 
 
 class Import(BrowserView):
@@ -44,18 +44,19 @@ class Import(BrowserView):
     and the cronjob assumes, something went wrong and sends a notification
     mail. Therefor take care that every error condition throws exceptions.
     """
+
     def __call__(self, url, user, password):
         count = 0
         browser = Browser(url)
-        browser.getControl(name = '__ac_name').value = user
-        browser.getControl(name = '__ac_password').value = password
-        browser.getControl('Log in').click()
+        browser.getControl(name="__ac_name").value = user
+        browser.getControl(name="__ac_password").value = password
+        browser.getControl("Log in").click()
         objects = xmlrpclib.loads(browser.contents)[0][0]
         import_utility = IRecensioImport(self.context)
         for object in objects:
-            path = object['path']
+            path = object["path"]
             if import_utility.exists(path):
-                raise Exception('Object already exists')
+                raise Exception("Object already exists")
             else:
                 self.add(object)
                 count += 1
@@ -70,14 +71,13 @@ class Import(BrowserView):
             path = getattr(settings, key)
             if not path:
                 continue
-            path_elems = path.split('->')
+            path_elems = path.split("->")
             value = obj
             for path_elem in path_elems:
                 value = value[path_elem]
             data[key] = value
         doc_id = sha(str(obj)).hexdigest()
-        self.import_folder.invokeFactory('Review einer Monographie', doc_id, \
-                                         **data)
+        self.import_folder.invokeFactory("Review einer Monographie", doc_id, **data)
 
     @property
     def import_folder(self):
@@ -85,19 +85,21 @@ class Import(BrowserView):
 
     @property
     def registry_settings(self):
-        if not hasattr(self, '_settings'):
+        if not hasattr(self, "_settings"):
             registry = getUtility(IRegistry)
             self._settings = registry.forInterface(IRecensioImportConfiguration)
         return self._settings
 
+
 class RecensioImportConfigurationEditForm(controlpanel.RegistryEditForm):
     schema = IRecensioImportConfiguration
-    label = 'Recensio Import settings'
-    description = ''
+    label = "Recensio Import settings"
+    description = ""
 
-class RecensioImportConfigurationControlPanel(\
-        controlpanel.ControlPanelFormWrapper):
+
+class RecensioImportConfigurationControlPanel(controlpanel.ControlPanelFormWrapper):
     form = RecensioImportConfigurationEditForm
+
 
 class FrontendException(Exception):
     pass
@@ -106,12 +108,12 @@ class FrontendException(Exception):
 def batch_import(context, batch):
     for (uuid, urn) in batch:
         brain = uuidToCatalogBrain(uuid)
-        document = context.restrictedTraverse(brain['path_string'])
+        document = context.restrictedTraverse(brain["path_string"])
         document.setUrn(urn)
 
 
 class URNImport(object):
-    template = ViewPageTemplateFile('templates/urn_import.pt')
+    template = ViewPageTemplateFile("templates/urn_import.pt")
     BATCH_SIZE = 1000
 
     def __init__(self, *args, **kwargs):
@@ -120,8 +122,8 @@ class URNImport(object):
         super(URNImport, self).__init__(*args, **kwargs)
 
     def __call__(self):
-        if 'xls' in self.request.form:
-            self.handleXLSImport(self.request.form['xls'])
+        if "xls" in self.request.form:
+            self.handleXLSImport(self.request.form["xls"])
         return self.template(self)
 
     def handleXLSImport(self, xls_document):
@@ -129,14 +131,14 @@ class URNImport(object):
         data = ExcelURNExtractor()(xls_document)
         async = getUtility(IAsyncService)
         for index in range(0, len(data), self.BATCH_SIZE):
-            batch_import(self.context, data[index:index + self.BATCH_SIZE])
-            async.queueJob(batch_import,
-                self.context,
-                data[index:index + self.BATCH_SIZE])
+            batch_import(self.context, data[index : index + self.BATCH_SIZE])
+            async.queueJob(
+                batch_import, self.context, data[index : index + self.BATCH_SIZE]
+            )
 
 
 class MagazineImport(object):
-    template = ViewPageTemplateFile('templates/mag_import.pt')
+    template = ViewPageTemplateFile("templates/mag_import.pt")
 
     def __init__(self, *args, **kwargs):
         self.warnings = []
@@ -149,31 +151,34 @@ class MagazineImport(object):
         super(MagazineImport, self).__init__(*args, **kwargs)
 
     def __call__(self):
-        req_has_key = lambda x: x in self.request.form.keys() and\
-            self.request.form[x].filename
-        if (req_has_key('xls') and req_has_key('pdf')) :
+        req_has_key = (
+            lambda x: x in self.request.form.keys() and self.request.form[x].filename
+        )
+        if req_has_key("xls") and req_has_key("pdf"):
             try:
-                self.addPDFContent(self.request.form['xls'], self.request.form['pdf'])
+                self.addPDFContent(self.request.form["xls"], self.request.form["pdf"])
             except FrontendException, e:
                 messages = IStatusMessage(self.request)
                 for error in self.errors:
-                    messages.addStatusMessage(error, type='error')
+                    messages.addStatusMessage(error, type="error")
             else:
-                pdf_id = self.context.invokeFactory('File', id='issue.pdf', title='issue.pdf')
+                pdf_id = self.context.invokeFactory(
+                    "File", id="issue.pdf", title="issue.pdf"
+                )
                 obj = self.context[pdf_id]
-                obj.setLanguage('')
-                obj.update_data(self.request.form['pdf'])
+                obj.setLanguage("")
+                obj.update_data(self.request.form["pdf"])
                 request = makerequest.makerequest(obj)
                 event = ObjectInitializedEvent(obj, request)
                 notify(event)
                 self.import_successful = True
-        elif req_has_key('zip'):
+        elif req_has_key("zip"):
             try:
-                self.addZIPContent(self.request.form['zip'])
+                self.addZIPContent(self.request.form["zip"])
             except FrontendException, e:
                 messages = IStatusMessage(self.request)
                 for error in self.errors:
-                    messages.addStatusMessage(error, type='error')
+                    messages.addStatusMessage(error, type="error")
             else:
                 self.import_successful = True
         return self.template(self)
@@ -184,7 +189,7 @@ class MagazineImport(object):
         except Exception, e:
             if isinstance(e, ConflictError):
                 raise
-            if hasattr(self.excel_converter, 'header_error'):
+            if hasattr(self.excel_converter, "header_error"):
                 self.header_error = self.excel_converter.header_error
             log.exception(str(e))
             self.errors.append(str(e))
@@ -194,16 +199,14 @@ class MagazineImport(object):
             self.warnings = self.excel_converter.warnings
         pdf_name = pdf.filename
         for result in results:
-            start, end = [
-                int(result.pop('pdfPage' + x) or 0)
-                for x in 'Start', 'End']
-            module, class_ = result.pop('portal_type')
+            start, end = [int(result.pop("pdfPage" + x) or 0) for x in "Start", "End"]
+            module, class_ = result.pop("portal_type")
             portal_type = self.type_getter(module, class_)
-            result['pdf'] = cutPDF(pdf, start, end)
+            result["pdf"] = cutPDF(pdf, start, end)
             result_item = addOneItem(self.context, portal_type, result)
             self.results.append(
-                {'name' : result_item.title,
-                 'url' : result_item.absolute_url()})
+                {"name": result_item.title, "url": result_item.absolute_url()}
+            )
         if self.errors:
             raise FrontendException()
 
@@ -222,22 +225,26 @@ class MagazineImport(object):
             self.warnings = self.excel_converter.warnings
         if len(docs) != len(results):
             self.errors.append(
-                _("The number of documents in the zip file do not match "
-                  "the number of entries in the excel file"))
+                _(
+                    "The number of documents in the zip file do not match "
+                    "the number of entries in the excel file"
+                )
+            )
             transaction.doom()
             raise FrontendException()
         for result, doc in zip(results, docs):
-            result['doc'] = doc
-            module, class_ = result.pop('portal_type')
+            result["doc"] = doc
+            module, class_ = result.pop("portal_type")
             portal_type = self.type_getter(module, class_)
             result_item = addOneItem(self.context, portal_type, result)
-            self.results.append({'name' : result_item.title, \
-                                 'url' : result_item.absolute_url()})
+            self.results.append(
+                {"name": result_item.title, "url": result_item.absolute_url()}
+            )
         if self.errors:
             raise FrontendException()
 
     def type_getter(self, module_path, class_):
         module = __import__(module_path)
-        for modname in module_path.split('.')[1:]:
+        for modname in module_path.split(".")[1:]:
             module = getattr(module, modname)
         return getattr(module, class_)
