@@ -1,9 +1,8 @@
+from Products.CMFCore.interfaces import ISiteRoot
+from recensio.imports.interfaces import IRecensioImport
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapts
 from zope.interface import implements
-from Products.CMFCore.interfaces import ISiteRoot
-
-from recensio.imports.interfaces import IRecensioImport
 
 RECENSIO_IMPORTS = "recensio.imports"
 

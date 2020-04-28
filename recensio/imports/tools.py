@@ -1,4 +1,6 @@
-import sys, urllib
+import sys
+import urllib
+
 from zc.testbrowser.browser import Browser
 
 

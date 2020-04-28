@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from swiss.tabular import XlsReader
-from zope.schema.interfaces import IVocabularyFactory
-from zope.component import getUtility
 import xlrd
-
 from recensio.policy import recensioMessageFactory as _
 from recensio.policy.tools import convertToString
+from swiss.tabular import XlsReader
+from zope.component import getUtility
+from zope.schema.interfaces import IVocabularyFactory
 
 
 class ExcelURNExtractor(object):

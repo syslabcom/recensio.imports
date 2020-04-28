@@ -1,5 +1,5 @@
-from zipfile import ZipFile
 from StringIO import StringIO
+from zipfile import ZipFile
 
 from recensio.policy import recensioMessageFactory as _
 
