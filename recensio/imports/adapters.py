@@ -4,6 +4,7 @@ from zope.annotation.interfaces import IAnnotations
 from zope.component import adapts
 from zope.interface import implements
 
+
 RECENSIO_IMPORTS = "recensio.imports"
 
 

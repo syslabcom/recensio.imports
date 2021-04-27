@@ -1,7 +1,7 @@
+from zc.testbrowser.browser import Browser
+
 import sys
 import urllib
-
-from zc.testbrowser.browser import Browser
 
 
 def triggerPloneImportFromRecensio():

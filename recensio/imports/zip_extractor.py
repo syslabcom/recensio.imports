@@ -1,7 +1,6 @@
+from recensio.policy import recensioMessageFactory as _
 from StringIO import StringIO
 from zipfile import ZipFile
-
-from recensio.policy import recensioMessageFactory as _
 
 
 class ZipExtractor(object):

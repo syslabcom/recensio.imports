@@ -1,6 +1,6 @@
 from logging import getLogger
-
 from Products.CMFCore.utils import getToolByName
+
 
 log = getLogger("recensio.imports.setuphandlers.py")
 

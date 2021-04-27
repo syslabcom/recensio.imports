@@ -1,5 +1,8 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
+
 import os
+
 
 version = "3.1.2.dev0"
 
@@ -10,7 +13,10 @@ setup(
     long_description=open("README.txt").read() + "\n" + open("CHANGES.txt").read(),
     # Get more strings from
     # http://pypi.python.org/pypi?%3Aaction=list_classifiers
-    classifiers=["Framework :: Plone", "Programming Language :: Python",],
+    classifiers=[
+        "Framework :: Plone",
+        "Programming Language :: Python",
+    ],
     keywords="",
     author="SYSLAB.COM",
     author_email="info@syslab.com",

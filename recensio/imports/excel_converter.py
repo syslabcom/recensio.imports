@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import xlrd
 from recensio.policy import recensioMessageFactory as _
 from recensio.policy.tools import convertToString
 from swiss.tabular import XlsReader
 from zope.component import getUtility
 from zope.schema.interfaces import IVocabularyFactory
+
+import xlrd
 
 
 class ExcelURNExtractor(object):

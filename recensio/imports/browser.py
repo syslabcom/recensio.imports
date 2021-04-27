@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-import xmlrpclib
 from logging import getLogger
-from sha import sha
-
-import transaction
 from plone.app.async.interfaces import IAsyncService
 from plone.app.registry.browser import controlpanel
 from plone.app.uuid.utils import uuidToCatalogBrain
@@ -20,11 +16,16 @@ from recensio.imports.interfaces import IRecensioImportConfiguration
 from recensio.imports.pdf_cut import cutPDF
 from recensio.imports.zip_extractor import ZipExtractor
 from recensio.policy import recensioMessageFactory as _
+from sha import sha
 from Testing import makerequest
 from zc.testbrowser.browser import Browser
 from ZODB.POSException import ConflictError
 from zope.component import getUtility
 from zope.event import notify
+
+import transaction
+import xmlrpclib
+
 
 log = getLogger("recensio.imports.browser")
 
