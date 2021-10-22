@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from logging import getLogger
+from plone import api
 from plone.app.async.interfaces import IAsyncService
 from plone.app.registry.browser import controlpanel
 from plone.app.uuid.utils import uuidToCatalogBrain
@@ -197,12 +198,36 @@ class MagazineImport(object):
             raise FrontendException()
         finally:
             self.warnings = self.excel_converter.warnings
+        gnd_view = api.content.get_view(
+            context=self.context, request=self.request, name="gnd-view",
+        )
         pdf_name = pdf.filename
         for result in results:
             start, end = [int(result.pop("pdfPage" + x) or 0) for x in "Start", "End"]
             module, class_ = result.pop("portal_type")
             portal_type = self.type_getter(module, class_)
             result["pdf"] = cutPDF(pdf, start, end)
+
+            authors = []
+            for person in result["reviewAuthors"]:
+                lastname = person["lastname"].replace("(", '"("').replace(")", '")"')
+                firstname = person["firstname"].replace("(", '"("').replace(")", '")"')
+                existing = gnd_view.getByName(
+                    firstname=firstname,
+                    lastname=lastname,
+                    solr=False,  # solr is only committed on transaction commit
+                )
+                if existing:
+                    authors.append(existing[0].getObject())
+                else:
+                    authors.append(
+                        gnd_view.createPerson(
+                            firstname=firstname,
+                            lastname=lastname,
+                        )
+                    )
+            result["reviewAuthors"] = authors
+
             result_item = addOneItem(self.context, portal_type, result)
             self.results.append(
                 {"name": result_item.title, "url": result_item.absolute_url()}

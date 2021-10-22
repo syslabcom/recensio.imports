@@ -450,10 +450,12 @@ class ExcelConverter(object):
                             data[mapping[key]] = unicode(row[index])
                     else:
                         data[mapping[key]] = row[index]
-            data["reviewAuthors"] = (
-                '[{"firstname":"%(firstname_review_authors_1)s",'
-                '"lastname":"%(lastname_review_authors_1)s"}]' % data
-            )
+            data["reviewAuthors"] = [
+                {
+                    "firstname": data["firstname_review_authors_1"],
+                    "lastname": data["lastname_review_authors_1"],
+                },
+            ]
             # data['reviewAuthors'] = 'firstname:%(firstname_review_authors_1)s,'\
             #    'lastname:%(lastname_review_authors_1)s' % data
             (
